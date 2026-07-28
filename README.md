@@ -23,7 +23,7 @@ This repository owns reusable GitHub Actions workflows. Product repositories kee
 
 ## Reusable React/TypeScript CI
 
-Caller repositories use an immutable commit reference:
+Caller repositories use an immutable commit reference and a stable caller-job display name:
 
 ```yaml
 name: LawChai CI
@@ -32,9 +32,12 @@ on:
   pull_request:
 
 jobs:
-  verify:
+  ci:
+    name: LawChai CI
     uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@<40-character-SHA> # v1.0.0
 ```
+
+This produces the required check name `LawChai CI / verify`. Do not rename the caller job display name or the reusable `verify` job without updating repository rulesets in the same controlled change.
 
 The reusable workflow verifies:
 
