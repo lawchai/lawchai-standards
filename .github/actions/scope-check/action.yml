@@ -1,0 +1,21 @@
+name: LawChai scope check
+description: Enforce per-PR YAML allowed paths and report large bounded diffs.
+
+inputs:
+  base_sha:
+    description: Pull-request base commit SHA.
+    required: true
+  head_sha:
+    description: Pull-request head commit SHA.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Validate per-PR scope metadata and diff size
+      shell: bash
+      env:
+        BASE_SHA: ${{ inputs.base_sha }}
+        HEAD_SHA: ${{ inputs.head_sha }}
+        SCOPE_PATH: .github/lawchai-scope.yml
+      run: node "$GITHUB_ACTION_PATH/scope-check.mjs"

@@ -17,94 +17,18 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
-      - name: Enforce bounded source diff
-        shell: bash
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const { execFileSync } = require('child_process');
-
-          const base = process.env.BASE_SHA;
-          const head = process.env.HEAD_SHA || 'HEAD';
-
-          if (!base) {
-            fs.appendFileSync(
-              process.env.GITHUB_STEP_SUMMARY,
-              'Source-diff gate skipped because this run has no pull-request base SHA.\n'
-            );
-            process.exit(0);
-          }
-
-          const output = execFileSync(
-            'git',
-            ['diff', '--numstat', '--no-renames', `${base}...${head}`, '--'],
-            { encoding: 'utf8' }
-          );
-
-          const excludedNames = new Set([
-            'package-lock.json',
-            'npm-shrinkwrap.json',
-            'pnpm-lock.yaml',
-            'yarn.lock',
-            'bun.lock',
-            'bun.lockb'
-          ]);
-          const excludedDirectories = /(^|\/)(node_modules|dist|build|coverage|out|\.next|\.wrangler)(\/|$)/;
-          const sourceExtension = /\.(cjs|mjs|js|jsx|ts|tsx|css|scss|sass|less|html|vue|svelte)$/i;
-
-          let changedLines = 0;
-          const countedFiles = [];
-
-          for (const line of output.split('\n').filter(Boolean)) {
-            const [added, deleted, rawPath] = line.split('\t');
-            const file = rawPath.replace(/\\/g, '/');
-            const name = file.split('/').pop();
-
-            if (
-              excludedNames.has(name) ||
-              excludedDirectories.test(file) ||
-              file.endsWith('.snap') ||
-              !sourceExtension.test(file)
-            ) {
-              continue;
-            }
-
-            const additions = added === '-' ? 0 : Number(added);
-            const deletions = deleted === '-' ? 0 : Number(deleted);
-            const fileLines = additions + deletions;
-            changedLines += fileLines;
-            countedFiles.push(`${file}: ${fileLines}`);
-          }
-
-          if (countedFiles.length === 0) {
-            fs.appendFileSync(
-              process.env.GITHUB_STEP_SUMMARY,
-              'Source-diff gate exempt: this PR changes only documentation, configuration, dependency metadata or generated files.\n'
-            );
-            process.exit(0);
-          }
-
-          fs.appendFileSync(
-            process.env.GITHUB_STEP_SUMMARY,
-            `Meaningful source/test diff: ${changedLines} changed lines across ${countedFiles.length} file(s).\n`
-          );
-
-          if (changedLines > 250) {
-            console.error(`Meaningful source/test diff is ${changedLines} lines; limit is 250.`);
-            console.error(countedFiles.join('\n'));
-            process.exit(1);
-          }
-          NODE
+      - name: Enforce per-PR structured scope and report diff size
+        uses: lawchai/lawchai-standards/.github/actions/scope-check@0d637b28a14c5aa9b3137a10e5c9ab9c5fd8a4c4
+        with:
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
