@@ -2,6 +2,8 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
+export const DEFAULT_SCOPE_PATH = ".github/lawchai-scope.yml";
+
 const EXCLUDED_NAMES = new Set([
   "package-lock.json",
   "npm-shrinkwrap.json",
@@ -13,14 +15,12 @@ const EXCLUDED_NAMES = new Set([
 const EXCLUDED_DIRECTORIES = /(^|\/)(node_modules|dist|build|coverage|out|\.next|\.wrangler)(\/|$)/;
 const SOURCE_EXTENSION = /\.(cjs|mjs|js|jsx|ts|tsx|css|scss|sass|less|html|vue|svelte)$/i;
 
-export function parseAllowedPaths(raw) {
-  if (typeof raw !== "string" || raw.trim() === "") {
-    throw new Error("allowed_paths is required and must contain at least one path.");
+function validateAllowedPaths(entries) {
+  if (entries.length === 0) {
+    throw new Error("allowed_paths must contain at least one path.");
   }
 
-  const entries = raw.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean);
   const seen = new Set();
-
   for (const entry of entries) {
     if (entry.startsWith("/") || /^[A-Za-z]:/.test(entry)) {
       throw new Error(`allowed_paths entry must be repository-relative: ${entry}`);
@@ -44,6 +44,47 @@ export function parseAllowedPaths(raw) {
   }
 
   return entries;
+}
+
+export function parseScopeYaml(raw) {
+  if (typeof raw !== "string" || raw.trim() === "") {
+    throw new Error("Scope metadata is empty; expected an allowed_paths YAML list.");
+  }
+  if (raw.includes("\t")) {
+    throw new Error("Scope metadata must use spaces, not tabs.");
+  }
+
+  const entries = [];
+  let foundKey = false;
+
+  for (const [index, line] of raw.split(/\r?\n/).entries()) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+
+    if (!foundKey) {
+      if (trimmed !== "allowed_paths:") {
+        throw new Error(`Line ${index + 1}: expected exactly 'allowed_paths:'.`);
+      }
+      foundKey = true;
+      continue;
+    }
+
+    const match = line.match(/^\s{2,}-\s+(.+?)\s*$/);
+    if (!match) {
+      throw new Error(`Line ${index + 1}: expected an indented '- repository/path' entry.`);
+    }
+
+    const entry = match[1].trim();
+    if (entry.startsWith("'") || entry.startsWith('"') || entry.includes(" #")) {
+      throw new Error(`Line ${index + 1}: use an unquoted path and full-line comments only.`);
+    }
+    entries.push(entry);
+  }
+
+  if (!foundKey) {
+    throw new Error("Scope metadata must define exactly one allowed_paths list.");
+  }
+  return validateAllowedPaths(entries);
 }
 
 export function pathIsAllowed(file, allowedPaths) {
@@ -89,19 +130,36 @@ function appendSummary(markdown) {
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, markdown);
 }
 
-export function runScopeCheck({ baseSha, headSha, rawAllowedPaths, git = execFileSync }) {
+export function runScopeCheck({
+  baseSha,
+  headSha,
+  scopePath = DEFAULT_SCOPE_PATH,
+  readFile = fs.readFileSync,
+  git = execFileSync,
+}) {
   if (!baseSha) throw new Error("Pull-request base SHA is unavailable; scope enforcement cannot run safely.");
   if (!headSha) throw new Error("Pull-request head SHA is unavailable; scope enforcement cannot run safely.");
 
-  const allowedPaths = parseAllowedPaths(rawAllowedPaths);
   const changedOutput = git(
     "git",
     ["diff", "--name-only", "--no-renames", `${baseSha}...${headSha}`, "--"],
     { encoding: "utf8" },
   );
   const changedPaths = changedOutput.split("\n").map((path) => path.trim()).filter(Boolean);
-  const unauthorised = findUnauthorisedPaths(changedPaths, allowedPaths);
 
+  if (!changedPaths.includes(scopePath)) {
+    throw new Error(`${scopePath} must be added or changed in every pull request so stale authorisation cannot be reused.`);
+  }
+
+  let rawScope;
+  try {
+    rawScope = readFile(scopePath, "utf8");
+  } catch {
+    throw new Error(`Unable to read required scope metadata at ${scopePath}.`);
+  }
+
+  const allowedPaths = parseScopeYaml(rawScope);
+  const unauthorised = findUnauthorisedPaths(changedPaths, allowedPaths);
   if (unauthorised.length > 0) {
     throw new Error(`Changed paths outside allowed_paths:\n${unauthorised.map((path) => `- ${path}`).join("\n")}`);
   }
@@ -113,7 +171,7 @@ export function runScopeCheck({ baseSha, headSha, rawAllowedPaths, git = execFil
   );
   const lineSummary = meaningfulLineSummary(numstatOutput);
 
-  appendSummary(`## Scope verification\n\n- Authorised changed paths: ${changedPaths.length}\n- Meaningful source/test diff: ${lineSummary.changedLines} changed lines\n`);
+  appendSummary(`## Scope verification\n\n- Metadata: ${scopePath}\n- Authorised changed paths: ${changedPaths.length}\n- Meaningful source/test diff: ${lineSummary.changedLines} changed lines\n`);
 
   if (lineSummary.exceedsReviewThreshold) {
     const detail = lineSummary.countedFiles.map(({ file, changedLines }) => `- ${file}: ${changedLines}`).join("\n");
@@ -129,7 +187,7 @@ function main() {
     runScopeCheck({
       baseSha: process.env.BASE_SHA,
       headSha: process.env.HEAD_SHA || "HEAD",
-      rawAllowedPaths: process.env.ALLOWED_PATHS,
+      scopePath: process.env.SCOPE_PATH || DEFAULT_SCOPE_PATH,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
