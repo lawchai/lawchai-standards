@@ -4,6 +4,16 @@
 
 One sentence describing the observable user or business outcome.
 
+## Queue classification
+
+Choose exactly one:
+
+- `routine implementation` — independent repository work; does not consume the global exception queue;
+- `exception decision` — blocked, failed, ambiguous or materially risky work requiring Lawrence;
+- `promotion review` — homepage, flagship, public-claim, archive or deep-maintenance decision.
+
+The exception and promotion-review queue is capped at three. Routine implementation across separate repositories is not globally capped. Exactly one coding agent may edit a repository or branch at a time.
+
 ## Authorised scope
 
 ### Files or subsystem to modify
@@ -19,7 +29,8 @@ One sentence describing the observable user or business outcome.
 - [ ] Specific observable result
 - [ ] Specific boundary or failure behaviour
 - [ ] Existing relevant behaviour remains intact
-- [ ] Change remains approximately 250 source lines or is split
+- [ ] Unknown and contradicted information remain explicit
+- [ ] Change remains bounded; a diff above approximately 250 meaningful source/test lines receives additional review attention but is not failed solely for size
 
 ## OUT-OF-SCOPE FINDINGS
 
@@ -32,9 +43,13 @@ If you identify an out-of-scope defect:
 
 ## MANDATORY TERMINAL STATE
 
-If you modify any files but cannot complete the task, open a draft PR titled `[BLOCKED] <task title>` containing the current diff, commands run, exact blocker and remaining work. Do not leave an unreported branch.
+Every dispatch must end in exactly one state:
 
-If you make no code changes, leave the branch unchanged and provide a written failure report.
+1. Ready PR.
+2. Draft PR titled `[BLOCKED] <task title>` containing the partial diff, commands run, exact blocker and remaining work.
+3. Unchanged branch plus a written failure report.
+
+No modified branch may exist without a PR.
 
 ## SEMANTIC CONTRACT CHANGES
 
@@ -45,11 +60,27 @@ If you make no code changes, leave the branch unchanged and provide a written fa
 - Consumers searched (explicit list):
 - Out-of-scope defects found (report only):
 
-## Test plan
+## Automated verification
 
+- Structured authorised-path check:
+- Configured tests and non-zero execution count:
 - Deterministic/boundary tests:
-- Build/typecheck/lint:
-- Browser/accessibility check, only when relevant:
+- Typecheck/lint/build:
+- Persistence/migration/export checks, where relevant:
+- Browser/accessibility checks for changed journeys:
+- Synthetic-data and no-secrets confirmation:
+- Unsupported-claim review:
+
+## Evidence and review boundary
+
+State whether the result is:
+
+- agent-reported;
+- independently reproduced by CI;
+- independently reproduced in a browser;
+- awaiting an exception or promotion decision.
+
+Routine verified work does not wait for Lawrence before unrelated repositories proceed. Lawrence reviews promotion, material public claims, high-risk architecture or semantic exceptions, and archive/deep-maintenance decisions.
 
 ## Reference material
 
