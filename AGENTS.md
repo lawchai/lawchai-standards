@@ -10,6 +10,19 @@ Create broadly and verify automatically. Lawrence reviews promotion decisions, u
 
 Deployment, verification, promotion and deep maintenance are separate states. A deployed experiment is not automatically verified, featured or maintained.
 
+## Mandatory context bootstrap
+
+A new LawChai chat or task must not be treated as a blank project. Before answering implementation-state questions, declaring an input missing or starting repository work:
+
+1. Read the current LawChai project instructions and canonical handoff/context documents.
+2. Search recent LawChai project conversations and the File Library for the named repository, prior decisions, uploaded archives, generated patches and verification reports.
+3. Inspect GitHub for the current default branch, open PRs, issues, CI, deployment configuration and recent merged work.
+4. Use chat history and file-search results for discovery, but treat GitHub as the source of truth for live code and repository state.
+5. Do not ask the user to repeat information already recoverable from the project or claim that source was never supplied until the project history and File Library have been searched.
+6. Move durable repository-specific decisions into `README.md`, `AGENTS.md`, issues or PRs so future chats do not depend only on conversational memory.
+
+If project-history retrieval is unavailable or incomplete, state that limitation precisely. Distinguish “not found in the active runtime” from “never supplied.”
+
 ## Parallel implementation lane
 
 - Separate repositories may have implementation work running concurrently.
