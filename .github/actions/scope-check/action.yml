@@ -1,0 +1,24 @@
+name: LawChai scope check
+description: Enforce structured allowed paths and report large bounded diffs.
+
+inputs:
+  allowed_paths:
+    description: Newline-delimited exact files or directory prefixes ending in /.
+    required: true
+  base_sha:
+    description: Pull-request base commit SHA.
+    required: true
+  head_sha:
+    description: Pull-request head commit SHA.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Validate authorised paths and diff size
+      shell: bash
+      env:
+        ALLOWED_PATHS: ${{ inputs.allowed_paths }}
+        BASE_SHA: ${{ inputs.base_sha }}
+        HEAD_SHA: ${{ inputs.head_sha }}
+      run: node "$GITHUB_ACTION_PATH/scope-check.mjs"
