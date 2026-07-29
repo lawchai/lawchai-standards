@@ -2,11 +2,6 @@ name: LawChai CI
 
 on:
   workflow_call:
-    inputs:
-      allowed_paths:
-        description: Newline-delimited exact files or directory prefixes ending in /.
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -26,10 +21,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Enforce structured scope and report diff size
-        uses: lawchai/lawchai-standards/.github/actions/scope-check@d08fbd6ea69ebc32fb20f664f09ec16c936d7cb3
+      - name: Enforce per-PR structured scope and report diff size
+        uses: lawchai/lawchai-standards/.github/actions/scope-check@0d637b28a14c5aa9b3137a10e5c9ab9c5fd8a4c4
         with:
-          allowed_paths: ${{ inputs.allowed_paths }}
           base_sha: ${{ github.event.pull_request.base.sha }}
           head_sha: ${{ github.event.pull_request.head.sha }}
 
