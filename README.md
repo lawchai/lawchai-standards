@@ -32,6 +32,19 @@ The global queue remains capped at three only for:
 - deployment or public-release decisions with irreversible risk;
 - promotion candidates awaiting homepage or flagship selection.
 
+## Project-wide context bootstrap
+
+New LawChai chats are not blank projects. Before making implementation-state claims or requesting repeated inputs, the assistant should:
+
+1. read the active project instructions and canonical handoff/context files;
+2. search recent LawChai project conversations and File Library uploads for the named work;
+3. inspect GitHub for current code, branches, PRs, CI and deployment state;
+4. use GitHub as the source of truth for live implementation while using chats and uploaded files to recover intent, archives and prior evidence;
+5. distinguish “not available in this runtime” from “never supplied”;
+6. store durable repository-specific decisions in repository documentation, issues and PRs rather than relying only on conversational memory.
+
+This reduces repeated questions and prevents a new chat from discarding earlier project work. It does not make chat summaries authoritative over current GitHub state.
+
 ## Current responsibility
 
 This repository owns reusable GitHub Actions workflows and durable portfolio delivery contracts. Product repositories keep their own repository-specific:
