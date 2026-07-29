@@ -53,6 +53,7 @@ This repository owns reusable GitHub Actions workflows and durable portfolio del
 - `QUALITY_GATE.md`
 - agent-task issue template
 - small caller workflow
+- per-PR `.github/lawchai-scope.yml`
 
 ## Reusable React/TypeScript CI
 
@@ -67,15 +68,27 @@ on:
 jobs:
   ci:
     name: LawChai CI
-    uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@<40-character-SHA> # v1.0.0
+    uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@<40-character-SHA>
 ```
+
+Every implementation PR adds or changes `.github/lawchai-scope.yml`:
+
+```yaml
+allowed_paths:
+  - .github/lawchai-scope.yml
+  - src/App.tsx
+  - src/components/
+  - tests/app.test.ts
+```
+
+The scope file must authorise itself and every changed path. CI fails when the file is inherited unchanged, missing, malformed or incomplete, preventing silent reuse of a previous task's authorisation.
 
 This produces the required check name `LawChai CI / verify`. Do not rename the caller job display name or the reusable `verify` job without updating repository rulesets in the same controlled change.
 
-The reusable workflow currently verifies:
+The candidate workflow in issue #5 verifies:
 
-- the meaningful source and test diff is no more than 250 changed lines;
-- documentation-only, configuration-only, dependency-metadata-only and generated-file-only changes are exempt from the source-diff limit;
+- required per-PR structured `allowed_paths` YAML against `git diff --name-only`;
+- a visible warning and summary when meaningful source/test changes exceed approximately 250 lines, without failing solely for size;
 - locked dependency installation with `npm ci`;
 - a real build command;
 - TypeScript verification through either `typecheck` or a build invoking `tsc`;
@@ -87,7 +100,7 @@ The reusable workflow currently verifies:
 - resulting bundle size for accumulation tracking;
 - obsolete runs are cancelled when a newer commit is pushed to the same pull request.
 
-Issue #5 separately tracks the ordered CI correction: preserve zero-test enforcement, add structured `allowed_paths`, then convert the approximately-250-line control to a soft warning. Until that workflow change is reviewed and consumers are repinned to its full SHA, the description above remains the truthful current behaviour.
+Until issue #5 is reviewed, merged and consumers are individually repinned to its immutable merge SHA, existing consumers retain the prior hard line-count behaviour.
 
 A green build does not imply automated test coverage when no test files exist. The workflow states that explicitly in its run summary. Test quality, issue-scope compliance and semantic-contract correctness remain review responsibilities.
 
