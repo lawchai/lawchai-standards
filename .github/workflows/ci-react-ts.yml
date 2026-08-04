@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Enforce per-PR structured scope and report diff size
-        uses: lawchai/lawchai-standards/.github/actions/scope-check@0d637b28a14c5aa9b3137a10e5c9ab9c5fd8a4c4
+        uses: lawchai/lawchai-standards/.github/actions/scope-check@38e9b3d99ebf76605591617917de7c1f7c0f84cf
         with:
           base_sha: ${{ github.event.pull_request.base.sha }}
           head_sha: ${{ github.event.pull_request.head.sha }}
