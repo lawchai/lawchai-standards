@@ -10,6 +10,8 @@ No implementation PR in this audit is approved or merged by this document. Brows
 
 ## Implemented premium branches
 
+The State column records the audit-time status. Later governance parking or closure preserves the branch and does not imply merge, approval or discarded work.
+
 | Surface | Repository | Design direction | PR | State |
 |---|---|---|---|---|
 | Portfolio homepage | `lawchai-labs/lawchai-site` | editorial portfolio presentation | `lawchai-labs/lawchai-site#278` | blocked draft: browser/deployment verification |
