@@ -1,0 +1,142 @@
+name: LawChai CI (self-hosted)
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lawchai-ci-self-hosted-${{ github.repository }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: [self-hosted, linux, x64, lawchai-general]
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Enforce per-PR structured scope and report diff size
+        uses: lawchai/lawchai-standards/.github/actions/scope-check@38e9b3d99ebf76605591617917de7c1f7c0f84cf
+        with:
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Validate verification posture
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const scripts = pkg.scripts || {};
+          const files = execSync('git ls-files', { encoding: 'utf8' })
+            .split('\n')
+            .filter(Boolean);
+          const testFiles = files.filter((file) => {
+            const normalized = file.replace(/\\/g, '/');
+            return (
+              /\.(test|spec)\.[cm]?[jt]sx?$/i.test(normalized) ||
+              (/(^|\/)(tests|__tests__)\//.test(normalized) &&
+                /\.[cm]?[jt]sx?$/i.test(normalized))
+            );
+          });
+
+          if (!scripts.build) {
+            throw new Error('package.json must define a build script');
+          }
+
+          if (
+            fs.existsSync('tsconfig.json') &&
+            !scripts.typecheck &&
+            !/\btsc\b/.test(scripts.build)
+          ) {
+            throw new Error(
+              'TypeScript repository has neither a typecheck script nor a build script that invokes tsc'
+            );
+          }
+
+          if (testFiles.length > 0 && !scripts.test) {
+            throw new Error(`Found ${testFiles.length} test file(s) but no test script`);
+          }
+
+          if (
+            scripts.test &&
+            /(^|&&|;)\s*(echo\b.*no tests?|exit\s+0\b|true\s*$)/i.test(scripts.test)
+          ) {
+            throw new Error('Test script appears to be a no-op');
+          }
+
+          const permissiveZeroTestPattern =
+            /passWithNoTests|pass-with-no-tests|allowNoTests|allow-no-tests|allowEmpty|allow-empty/i;
+          const testConfigurationFiles = files.filter((file) =>
+            /(^|\/)(package\.json|.*(?:vitest|jest|playwright|cypress).*config\.[cm]?[jt]s)$/i.test(file)
+          );
+          const permissiveFiles = testConfigurationFiles.filter((file) =>
+            permissiveZeroTestPattern.test(fs.readFileSync(file, 'utf8'))
+          );
+
+          if (scripts.test && permissiveZeroTestPattern.test(scripts.test)) {
+            throw new Error('Test script permits a successful zero-test run');
+          }
+
+          if (permissiveFiles.length > 0) {
+            throw new Error(
+              `Test configuration permits a successful zero-test run: ${permissiveFiles.join(', ')}`
+            );
+          }
+
+          fs.appendFileSync(
+            process.env.GITHUB_STEP_SUMMARY,
+            testFiles.length > 0
+              ? `Detected ${testFiles.length} tracked test file(s).\n`
+              : 'No automated test files are currently tracked; CI does not claim test coverage.\n'
+          );
+          NODE
+
+      - name: Typecheck when configured
+        run: npm run typecheck --if-present
+
+      - name: Lint when configured
+        run: npm run lint --if-present
+
+      - name: Run tests when configured
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Confirm verification left a clean working tree
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --short
+            echo "Verification created or modified non-ignored files."
+            exit 1
+          fi
+
+      - name: Report built bundle size
+        if: always()
+        shell: bash
+        run: |
+          if [ -d dist ]; then
+            size_kb=$(du -sk dist | cut -f1)
+            echo "Built dist size: ${size_kb} KB" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No dist directory produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
