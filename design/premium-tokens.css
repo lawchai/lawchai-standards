@@ -1,0 +1,123 @@
+:root {
+  color-scheme: dark;
+  --lc-canvas: #070a0f;
+  --lc-canvas-raised: #0b1017;
+  --lc-surface: rgba(13, 18, 25, 0.84);
+  --lc-surface-strong: rgba(15, 21, 29, 0.95);
+  --lc-text: #f8fafc;
+  --lc-text-muted: #9ca9b8;
+  --lc-line: rgba(203, 213, 225, 0.13);
+  --lc-line-strong: rgba(125, 211, 252, 0.25);
+  --lc-accent: #38bdf8;
+  --lc-accent-strong: #2563eb;
+  --lc-success: #10b981;
+  --lc-warning: #f59e0b;
+  --lc-danger: #ef4444;
+  --lc-radius-sm: 0.75rem;
+  --lc-radius-md: 1rem;
+  --lc-radius-lg: 1.4rem;
+  --lc-shadow-sm: 0 12px 34px rgba(0, 0, 0, 0.2);
+  --lc-shadow-lg: 0 30px 90px rgba(0, 0, 0, 0.36);
+  --lc-focus: 0 0 0 4px color-mix(in srgb, var(--lc-accent) 12%, transparent);
+  --lc-duration: 150ms;
+  --lc-body-font: Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --lc-display-font: "SF Pro Display", "Segoe UI Variable Display", Inter, ui-sans-serif, system-ui, sans-serif;
+  --lc-mono-font: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+/* Product overrides should change identity, not semantic-state colours. */
+[data-product="interview-scheduler"] {
+  --lc-accent: #38bdf8;
+  --lc-accent-strong: #2563eb;
+}
+
+[data-product="tech-recruiter-fluency"] {
+  --lc-accent: #fb923c;
+  --lc-accent-strong: #ea580c;
+}
+
+[data-product="boolean-search-trainer"] {
+  --lc-accent: #22d3ee;
+  --lc-accent-strong: #2563eb;
+}
+
+[data-product="cost-of-inaction"] {
+  --lc-accent: #2dd4bf;
+  --lc-accent-strong: #0f766e;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--lc-canvas);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--lc-text);
+  background: var(--lc-canvas);
+  font-family: var(--lc-body-font);
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  min-height: 44px;
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--lc-accent) 58%, white);
+  outline-offset: 3px;
+}
+
+.lc-surface {
+  border: 1px solid var(--lc-line);
+  border-radius: var(--lc-radius-lg);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 46%),
+    var(--lc-surface);
+  box-shadow: var(--lc-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.lc-primary-action {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--lc-radius-sm);
+  color: #fff;
+  background: linear-gradient(135deg, var(--lc-accent-strong), var(--lc-accent));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--lc-accent-strong) 20%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.lc-data,
+.lc-code {
+  font-family: var(--lc-mono-font);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
