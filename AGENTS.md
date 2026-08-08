@@ -8,7 +8,11 @@ This repository is the portfolio-wide trust root. Do not dispatch Jules or anoth
 
 Create broadly and verify automatically. Lawrence reviews promotion decisions, unresolved exceptions and material irreversible risks, not routine bounded implementation details.
 
+There is no arbitrary project-count ceiling. Hundreds or thousands of genuinely distinct, working and truthfully presented experiments are acceptable. Do not inflate counts with trivial reskins, clones, empty shells or broken projects.
+
 Deployment, verification, promotion and deep maintenance are separate states. A deployed experiment is not automatically verified, featured or maintained.
+
+Priority changes are additive by default. Preserve useful existing features, content, workflows, scenarios, evidence and domain coverage; extend or deepen them rather than deleting prior capability. Remove or replace only when broken, unsafe, misleading, genuinely duplicative, materially harmful, incompatible with a necessary integrity correction, or explicitly authorised. Any intentional loss of public capability is a semantic-contract change.
 
 ## Mandatory context bootstrap
 
@@ -72,6 +76,16 @@ Every implementation dispatch must run the repository-defined checks applicable 
 
 A line-count threshold is a review signal, not a substitute for scope control or correctness evidence.
 
+## Verification economy
+
+Default: trust concrete agent evidence for routine continuation; audit consequential decisions; re-execute only when evidence needs adjudication.
+
+Do not routinely rerun identical tests, builds, browser matrices or audits against an unchanged already-verified head merely because another agent produced the evidence.
+
+Reinspect or re-execute when the head changed, evidence conflicts or is missing, configured tests ran zero tests, environment differences materially matter, security/privacy/data/migration or semantic-contract risk is high, or evidence is disputed.
+
+Before merge, material deployment, flagship/homepage promotion or other consequential decisions, inspect the critical underlying diff, scope, test assertions, consumers, CI and unresolved review evidence. Agent summaries or green CI alone are insufficient for those decisions.
+
 ## Semantic-contract declaration
 
 Every implementation PR body must state:
@@ -82,6 +96,7 @@ Every implementation PR body must state:
 - Error-handling behaviour changed.
 - Consumers searched, listed explicitly.
 - Out-of-scope defects found, reported only and not fixed.
+- Relevant persistence, reset, import/export and migration effects.
 
 ## Lawrence review boundary
 
