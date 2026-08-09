@@ -108,6 +108,16 @@ test('configuration rejects non-HTTPS version URLs', async () => {
   assert.equal(receipt.attempts_used, 0);
 });
 
+test('configuration rejects abbreviated commit identifiers', async () => {
+  const receipt = await verifyDeployment({ ...base, expectedSha: SHA.slice(0, 12) }, {
+    fetchImpl: async () => { throw new Error('must not fetch'); },
+    sleep: noSleep,
+  });
+  assert.equal(receipt.status, 'unknown');
+  assert.equal(receipt.terminal_state, 'config_error');
+  assert.equal(receipt.attempts_used, 0);
+});
+
 test('oversized version documents remain unknown and raw content is not retained', async () => {
   const huge = JSON.stringify({ sha: SHA, built_at: BUILT_AT, padding: 'x'.repeat(70 * 1024) });
   const receipt = await verifyDeployment(base, {
