@@ -4,9 +4,12 @@ on:
   pull_request:
     paths:
       - ".github/actions/scope-check/**"
+      - ".github/actions/verify-deploy/**"
       - ".github/workflows/ci-react-ts.yml"
       - ".github/workflows/standards-ci.yml"
       - "tests/scope-check.test.mjs"
+      - "tests/verify-deploy.test.mjs"
+      - "VERIFIED_CLOSURE_CONTRACT.md"
 
 permissions:
   contents: read
@@ -21,5 +24,5 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
-      - name: Run deterministic scope fixtures
-        run: node --test tests/scope-check.test.mjs
+      - name: Run deterministic scope and closure fixtures
+        run: node --test tests/scope-check.test.mjs tests/verify-deploy.test.mjs
