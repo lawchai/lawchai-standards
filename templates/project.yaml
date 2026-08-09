@@ -1,0 +1,33 @@
+schema_version: 1
+id: ""
+title: ""
+purpose: ""
+distinct_mechanism: ""
+evidence_produced: []
+relationship:
+  complements: []
+  replaces: []
+  contributes_to: []
+promotion_condition: ""
+target_roles: []
+capabilities: []
+status: experiment
+repository:
+  owner: ""
+  name: ""
+  url: ""
+deployment:
+  status: not_deployed
+  url: ""
+featured: false
+synthetic_data:
+  used: false
+  disclosure_location: ""
+claims:
+  users: unknown
+  customers: unknown
+  adoption: unknown
+  outcomes: unknown
+verification:
+  head_sha: ""
+  checked_at: ""
