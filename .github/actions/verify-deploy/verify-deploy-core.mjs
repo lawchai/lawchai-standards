@@ -1,4 +1,5 @@
 const DEFAULT_MAX_RESPONSE_BYTES = 64 * 1024;
+const FULL_SHA_RE = /^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$/;
 
 function positiveInteger(value, fallback, min, max) {
   const number = Number(value ?? fallback);
@@ -22,8 +23,8 @@ function normalizeConfig(input) {
   const delaySeconds = positiveInteger(input.delaySeconds, 3, 0, 60);
   const timeoutSeconds = positiveInteger(input.timeoutSeconds, 10, 1, 60);
 
-  if (!expectedSha || !/^[0-9a-fA-F]{7,128}$/.test(expectedSha)) {
-    return { error: 'expected_sha must be a non-empty hexadecimal commit identifier' };
+  if (!expectedSha || !FULL_SHA_RE.test(expectedSha)) {
+    return { error: 'expected_sha must be a full 40- or 64-character hexadecimal commit identifier' };
   }
 
   let parsedUrl;
@@ -89,8 +90,8 @@ function parseVersionDocument(text) {
 
   const sha = safeString(parsed?.sha, 128);
   const builtAt = safeString(parsed?.built_at, 128);
-  if (!sha || !/^[0-9a-fA-F]{7,128}$/.test(sha)) {
-    return { error: 'version document did not contain a valid sha' };
+  if (!sha || !FULL_SHA_RE.test(sha)) {
+    return { error: 'version document did not contain a full 40- or 64-character sha' };
   }
   if (!builtAt || Number.isNaN(Date.parse(builtAt))) {
     return { error: 'version document did not contain a valid built_at timestamp' };
