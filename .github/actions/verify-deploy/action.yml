@@ -1,0 +1,53 @@
+name: Verified Closure deployment identity
+description: Verify that a live HTTPS version document serves the expected Git commit and emit a tri-state closure receipt.
+inputs:
+  version_url:
+    description: HTTPS URL returning JSON with full deployment identity, for example {"sha":"...","built_at":"..."}.
+    required: true
+  expected_sha:
+    description: Expected Git commit identifier. The live document must match it exactly.
+    required: true
+  attempts:
+    description: Number of verification attempts before the result becomes terminal.
+    required: false
+    default: "5"
+  delay_seconds:
+    description: Delay between attempts, in whole seconds.
+    required: false
+    default: "3"
+  timeout_seconds:
+    description: Per-attempt HTTPS timeout, in whole seconds.
+    required: false
+    default: "10"
+outputs:
+  status:
+    description: pass, mismatch, or unknown.
+    value: ${{ steps.verify.outputs.status }}
+  terminal_state:
+    description: verified, mismatch, unreachable, http_error, invalid_response, or config_error.
+    value: ${{ steps.verify.outputs.terminal_state }}
+  observed_sha:
+    description: Live SHA when a valid version document was observed.
+    value: ${{ steps.verify.outputs.observed_sha }}
+  built_at:
+    description: Live build timestamp when a valid version document was observed.
+    value: ${{ steps.verify.outputs.built_at }}
+  attempts_used:
+    description: Number of attempts used.
+    value: ${{ steps.verify.outputs.attempts_used }}
+  receipt_json:
+    description: Compact machine-readable closure receipt.
+    value: ${{ steps.verify.outputs.receipt_json }}
+runs:
+  using: composite
+  steps:
+    - id: verify
+      name: Verify live deployment identity
+      shell: bash
+      env:
+        INPUT_VERSION_URL: ${{ inputs.version_url }}
+        INPUT_EXPECTED_SHA: ${{ inputs.expected_sha }}
+        INPUT_ATTEMPTS: ${{ inputs.attempts }}
+        INPUT_DELAY_SECONDS: ${{ inputs.delay_seconds }}
+        INPUT_TIMEOUT_SECONDS: ${{ inputs.timeout_seconds }}
+      run: node "$GITHUB_ACTION_PATH/verify-deploy.mjs"
