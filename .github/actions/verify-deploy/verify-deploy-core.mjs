@@ -36,6 +36,12 @@ function normalizeConfig(input) {
   if (parsedUrl.protocol !== 'https:') {
     return { error: 'version_url must use https' };
   }
+  if (!parsedUrl.hostname) {
+    return { error: 'version_url must contain a valid hostname' };
+  }
+  if (parsedUrl.username || parsedUrl.password) {
+    return { error: 'version_url must not contain credentials' };
+  }
 
   if (attempts === null) return { error: 'attempts must be an integer from 1 to 20' };
   if (delaySeconds === null) return { error: 'delay_seconds must be an integer from 0 to 60' };
@@ -73,6 +79,21 @@ async function readBoundedText(response, maxBytes = DEFAULT_MAX_RESPONSE_BYTES) 
   if (contentLength && Number(contentLength) > maxBytes) {
     throw new Error('response exceeded maximum allowed size');
   }
+
+  if (response.body && typeof response.body[Symbol.asyncIterator] === 'function') {
+    let bytesRead = 0;
+    const chunks = [];
+    for await (const chunk of response.body) {
+      bytesRead += chunk.byteLength;
+      if (bytesRead > maxBytes) {
+        throw new Error('response exceeded maximum allowed size');
+      }
+      chunks.push(chunk);
+    }
+    const buffer = Buffer.concat(chunks);
+    return buffer.toString('utf8');
+  }
+
   const text = await response.text();
   if (Buffer.byteLength(text, 'utf8') > maxBytes) {
     throw new Error('response exceeded maximum allowed size');
@@ -86,6 +107,10 @@ function parseVersionDocument(text) {
     parsed = JSON.parse(text);
   } catch {
     return { error: 'version document was not valid JSON' };
+  }
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    return { error: 'version document must be a JSON object' };
   }
 
   const sha = safeString(parsed?.sha, 128);
