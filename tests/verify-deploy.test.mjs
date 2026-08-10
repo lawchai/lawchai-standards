@@ -128,3 +128,59 @@ test('oversized version documents remain unknown and raw content is not retained
   assert.equal(receipt.terminal_state, 'invalid_response');
   assert.equal('raw_body' in receipt, false);
 });
+
+test('streaming response exceeding max bytes aborts early and fails closed', async () => {
+  const receipt = await verifyDeployment(base, {
+    fetchImpl: async () => {
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new Uint8Array(40 * 1024)); // 40 KiB
+          controller.enqueue(new Uint8Array(30 * 1024)); // 30 KiB - total 70 KiB
+          controller.close();
+        }
+      });
+      return new Response(stream, { status: 200, headers: { 'content-type': 'application/json' } });
+    },
+    sleep: noSleep,
+  });
+  assert.equal(receipt.status, 'unknown');
+  assert.equal(receipt.terminal_state, 'invalid_response');
+  assert.match(receipt.reason, /exceeded maximum allowed size/);
+});
+
+test('configuration rejects invalid absolute URLs', async () => {
+  const receipt = await verifyDeployment({ ...base, versionUrl: 'not-a-url' }, {
+    fetchImpl: async () => { throw new Error('must not fetch'); },
+    sleep: noSleep,
+  });
+  assert.equal(receipt.status, 'unknown');
+  assert.equal(receipt.terminal_state, 'config_error');
+  assert.match(receipt.reason, /valid absolute URL/);
+});
+
+test('configuration rejects credentials in URLs', async () => {
+  for (const invalidUrl of [
+    'https://user:pass@example.test/version',
+    'https://user@example.test/version',
+  ]) {
+    const receipt = await verifyDeployment({ ...base, versionUrl: invalidUrl }, {
+      fetchImpl: async () => { throw new Error('must not fetch'); },
+      sleep: noSleep,
+    });
+    assert.equal(receipt.status, 'unknown');
+    assert.equal(receipt.terminal_state, 'config_error');
+    assert.match(receipt.reason, /credentials/);
+  }
+});
+
+test('non-object JSON payloads remain unknown', async () => {
+  for (const invalidPayload of ['null', '[]', '"string"', '123']) {
+    const receipt = await verifyDeployment(base, {
+      fetchImpl: async () => response(invalidPayload),
+      sleep: noSleep,
+    });
+    assert.equal(receipt.status, 'unknown');
+    assert.equal(receipt.terminal_state, 'invalid_response');
+    assert.match(receipt.reason, /JSON object/);
+  }
+});
