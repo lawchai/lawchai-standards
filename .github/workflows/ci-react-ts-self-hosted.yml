@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   verify:
-    runs-on: [self-hosted, linux, x64, lawchai-future]
+    runs-on: [self-hosted, linux, x64]
     timeout-minutes: 15
 
     steps:
