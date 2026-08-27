@@ -28,7 +28,7 @@ jobs:
           cache: npm
 
       - name: Enforce per-PR structured scope and report diff size
-        uses: lawchai/lawchai-standards/.github/actions/scope-check@38e9b3d99ebf76605591617917de7c1f7c0f84cf
+        uses: $/.github/actions/scope-check
         with:
           base_sha: ${{ github.event.pull_request.base.sha }}
           head_sha: ${{ github.event.pull_request.head.sha }}
