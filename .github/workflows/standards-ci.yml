@@ -6,9 +6,11 @@ on:
       - ".github/actions/scope-check/**"
       - ".github/actions/verify-deploy/**"
       - ".github/workflows/ci-react-ts.yml"
+      - ".github/workflows/ci-react-ts-self-hosted.yml"
       - ".github/workflows/standards-ci.yml"
       - "tests/scope-check.test.mjs"
       - "tests/verify-deploy.test.mjs"
+      - "tests/workflow-reference.test.mjs"
       - "VERIFIED_CLOSURE_CONTRACT.md"
 
 permissions:
@@ -25,4 +27,4 @@ jobs:
         with:
           node-version: 22
       - name: Run deterministic scope and closure fixtures
-        run: node --test tests/scope-check.test.mjs tests/verify-deploy.test.mjs
+        run: node --test tests/scope-check.test.mjs tests/verify-deploy.test.mjs tests/workflow-reference.test.mjs
