@@ -1,0 +1,805 @@
+{
+  "schema_version": 1,
+  "refreshed_at": "2026-09-02",
+  "authority": {
+    "project_source": "LAWCHAI_PROJECT_SOURCE_EXECUTION_FIRST_V4_5_CONSUMER_PRIORITY_FULL.md",
+    "mutable_truth": "GitHub",
+    "rule": "Generated apps are reference/design/feature candidates until deliberately adopted; preserve raw originals separately from sanitized/adopted derivatives."
+  },
+  "discovery": {
+    "fingerprint_method": [
+      "My Google AI Studio App",
+      "An application built with Google AI Studio",
+      "DISABLE_HMR",
+      "GEMINI_API_KEY"
+    ],
+    "fingerprinted_repository_count": 74,
+    "caution": "Fingerprint means AI-Studio-derived/related is plausible, not proven origin. Confirmed provenance must come from repo metadata, handoff, AI Studio URL, or prior durable evidence."
+  },
+  "confirmed_named_ai_studio_repositories": [
+    "lawchai/LawChai-Reachability-ai-studio",
+    "lawchai/creator-exchange-ai-studio",
+    "lawchai/lawchai-creator-exchange-ai-studio",
+    "lawchai/lawchai-labs-private-drop-ai-studio",
+    "lawchai/threadvault-ai-studio"
+  ],
+  "confirmed_klanko_preservation_corpus": {
+    "repository": "lawchai/klanko",
+    "observed_main_sha": "7938b0912f2e0bc5f9eae1c84f25956f19a93909",
+    "experiments": [
+      "experiments/instant-profile",
+      "experiments/nearby-ai-studio",
+      "experiments/ai-identity-passport",
+      "experiments/profile-referral-loop-ai-studio",
+      "experiments/maps-ai-studio"
+    ]
+  },
+  "recovered_historical_variants": [
+    {
+      "name": "DeltaLedger",
+      "repository": "lawchai/lawchai-labs-delta-ledger",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "Security Radar",
+      "repository": "lawchai/lawchai-labs-security-radar",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "PrivateDrop AI Studio",
+      "repository": "lawchai/lawchai-labs-private-drop-ai-studio",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "ProofLayer Bento",
+      "repository": "lawchai/lawchai-labs-prooflayer",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "ProofLayer Immersive",
+      "repository": "lawchai/lawchai-prooflayer-immersive",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "Creator Exchange AI Studio",
+      "repository": "lawchai/creator-exchange-ai-studio",
+      "status": "GITHUB_PRESENT"
+    },
+    {
+      "name": "Creator Exchange AI Studio alternate",
+      "repository": "lawchai/lawchai-creator-exchange-ai-studio",
+      "status": "GITHUB_PRESENT"
+    }
+  ],
+  "file_library_references": [
+    {
+      "name": "lawchai-audio-learning-lab (2).zip",
+      "provider": "Google AI Studio",
+      "status": "FILE_LIBRARY_REFERENCE",
+      "ai_studio_app": "34efd10b-2a41-4e83-be75-354769f86563",
+      "note": "Earlier export; later variants exist."
+    },
+    {
+      "name": "lawchai-audio-learning-lab (6).zip",
+      "provider": "Google AI Studio",
+      "status": "FILE_LIBRARY_REFERENCE",
+      "ai_studio_app": "34efd10b-2a41-4e83-be75-354769f86563",
+      "note": "Contains later integrity/music-pack work."
+    },
+    {
+      "name": "lawchai-audio-learning-lab (8).zip",
+      "provider": "Google AI Studio",
+      "status": "FILE_LIBRARY_REFERENCE",
+      "ai_studio_app": "34efd10b-2a41-4e83-be75-354769f86563",
+      "note": "Latest recovered File Library variant in this continuity pass; includes provenance/integrity and audio-planning mechanics."
+    },
+    {
+      "name": "Pasted markdown (2).md — PrivateDrop AI Studio upgrade",
+      "status": "FILE_LIBRARY_REFERENCE",
+      "note": "Prior generated PrivateDrop feature output; reconcile against current PrivateDrop repo before reuse."
+    }
+  ],
+  "current_priority_reference_set": {
+    "target_repository": "lawchai/path-uncover",
+    "companion_reference_repository": "lawchai/fog-of-war-exploration",
+    "rationale": "Current Project Source ranks the walking/running/cycling/hiking path-exploration consumer app #2 with fog-of-war/map-uncovering as hero mechanic.",
+    "internal_references": [
+      {
+        "repository": "lawchai/Recursive-Zoom-Conquest",
+        "reuse": [
+          "MapLibre/H3 stack",
+          "hierarchical geography",
+          "recursive zoom"
+        ],
+        "reject": [
+          "combat/faction simulation",
+          "fake activity"
+        ]
+      },
+      {
+        "repository": "lawchai/Singapore-Territory",
+        "reuse": [
+          "local persistence",
+          "territory/map state",
+          "offline awareness"
+        ],
+        "reject": [
+          "combat/energy mechanics",
+          "synthetic rival activity"
+        ]
+      },
+      {
+        "repository": "lawchai/SG-Conquest",
+        "reuse": [
+          "mobile map interaction patterns",
+          "local game-state persistence"
+        ],
+        "reject": [
+          "battle/hero systems"
+        ]
+      },
+      {
+        "repository": "lawchai/SingaWorld-Singapore-3D-Living-Prototype",
+        "reuse": [
+          "spatial exploration/navigation interaction ideas"
+        ],
+        "reject": [
+          "unrelated economy/combat world simulation"
+        ]
+      },
+      {
+        "repository": "lawchai/klanko",
+        "reuse": [
+          "Maps spatial discovery design",
+          "share/referral mechanics where product-fit"
+        ],
+        "reject": [
+          "Klanko identity/trust semantics unless explicitly needed"
+        ]
+      }
+    ],
+    "external_mechanic_references": [
+      "Fog of World — permanent fog reveal, history import/export, privacy",
+      "Wandrer — new-road completion/progress across walk/run/hike/bike",
+      "Strava — personal heatmaps/routes",
+      "FOG/FogWalker class — local-first fog reveal and shareable maps"
+    ]
+  },
+  "fingerprinted_repositories": [
+    {
+      "repository": "lawchai/2-17-A.M.",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Account-Pursuit",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Ask-Klanko",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/briefops",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "README.md",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Candidate-Evidence-Mapper",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "README.md",
+        "server.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Ciudad-L-mina",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Contract-Continuity-Engine",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/creator-exchange-ai-studio",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Decision-Memory-Avoidance-Engine",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/decision-os",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "MODEL_COUNCIL.md",
+        "decision_os/model_council.py",
+        "tests/test_model_council.py"
+      ]
+    },
+    {
+      "repository": "lawchai/District-Deck-Forge",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/District-Dungeon-Maker",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/FirstValue",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Funny-or-Not-Humor-Tournament",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Glyph-Circuit",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Hawker-Quest-Network",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/HouseSync",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Klanko-AI-Identity-Passport-Network",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Klanko-Commons",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Klanko-Reputation-API-Developer-Console",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Klanko-Version-Observatory",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Admin-Zero",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-creator-exchange-ai-studio",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Evidence-Intelligence-Workspace",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Intel-Pocket",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-aetheria",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-delta-ledger",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-more-music",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "server/services/geminiService.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-openloop",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-prooflayer",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-labs-security-radar",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-LifeOS",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Maybe",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Network",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-prooflayer-immersive",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/lawchai-reachability",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/LawChai-Reachability-ai-studio",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-After-Dark",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server/gemini.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-Fit-Check",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-Knows-You-",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-Live",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-Passport",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Mateo-Remix-Studio",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/meeting-prep-ai-genius",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        "README.md",
+        "netlify/functions/analyze-meeting.ts",
+        "netlify/functions/generate-brief.ts",
+        "tests/cloudflare-migration.test.mjs",
+        "worker/index.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Neighbourhood-League",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/PlateROI",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/PriceLoop",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/ProofPocket",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/PULSEFRONT",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/PULSEFRONT-Visual-Asset-System",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Recall---Personal-Memory-Resurfacing-Engine",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Recursive-Zoom-Conquest",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/RELAYBORN",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/RELAYBORN-Art-Asset-Language-System",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Relicbound-Expeditions",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "src/services/geminiService.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Ruleforge",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/security-evidence-workbench",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/SG-Conquest",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/SG-Job-Capture",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/SG-Market-Lens",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Signal-Duel",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Singapore-Passport",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Singapore-Territory",
+      "evidence_hits": 1,
+      "evidence_paths": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/SingaWorld-Singapore-3D-Living-Prototype",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Stance-Tell-Tactical-Card-Clash",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Talent-Recall-Candidate-Rediscovery-Reactivation-OS",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/TenderOS-SEA",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Trend-Mutation-Radar",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/TripReady",
+      "evidence_hits": 2,
+      "evidence_paths": [
+        ".env.example",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Variant-Foundry",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Viral-Control-Lab",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/Viral-Genome-Lab",
+      "evidence_hits": 5,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/WearLoop",
+      "evidence_hits": 4,
+      "evidence_paths": [
+        ".env.example",
+        "index.html",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    },
+    {
+      "repository": "lawchai/WorthIt",
+      "evidence_hits": 3,
+      "evidence_paths": [
+        ".env.example",
+        "server.ts",
+        "vite.config.ts"
+      ]
+    }
+  ]
+}
