@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "refreshed_at": "2026-09-02T16:43:50Z",
+  "refreshed_at": "2026-09-02T17:05:46Z",
   "authority": {
     "project_source": "LAWCHAI_PROJECT_SOURCE_EXECUTION_FIRST_V4_5_CONSUMER_PRIORITY_FULL.md",
     "mutable_truth": "GitHub",
@@ -168,12 +168,18 @@
       "canonical_repository": "lawchai/path-uncover",
       "canonical_main_sha": "3e0107971bde88601cc53d51014f9e09972d7410",
       "canonical_verification_run": 33656618789,
-      "canonical_status": "INTEGRATED_VERIFIED_NOT_DEPLOYED",
+      "canonical_status": "LIVE_VERIFIED",
       "companion_repository": "lawchai/fog-of-war-exploration",
       "companion_main_sha": "c2989f9f7209b80ee31c92434a098f845e95aedf",
       "companion_verification_run": 33638643354,
       "companion_status": "VERIFIED_REFERENCE_IMPLEMENTATION",
-      "composition": "Canonical Path Uncover current main composes GPX/geospatial reveal, map-first progressive disclosure, Daily Exploration, Connections, Passport, privacy-preserving Map Time Machine, consent-bounded frontier/provider contracts and route-geometry privacy hardening; companion remains a focused reference/mechanic lane."
+      "composition": "Canonical Path Uncover current main composes GPX/geospatial reveal, map-first progressive disclosure, Daily Exploration, Connections, Passport, privacy-preserving Map Time Machine, consent-bounded frontier/provider contracts and route-geometry privacy hardening; companion remains a focused reference/mechanic lane.",
+      "public_url": "https://lawchai.com/labs/path-uncover/",
+      "publication_carrier_repository": "lawchai-labs/lawchai-site",
+      "publication_site_sha": "471fdd9271f40b8877904640e21a9997fbdd03dc",
+      "publication_deploy_run": 33657445723,
+      "publication_live_verify_run": 33657445750,
+      "publication_status": "CLOSED_LIVE_VERIFIED"
     }
   },
   "fingerprinted_repositories": [
