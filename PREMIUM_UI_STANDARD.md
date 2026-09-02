@@ -53,7 +53,9 @@ Homepage prominence remains limited to Interview Scheduler, Tech Recruiter Fluen
 ### Surfaces
 
 - Canvas: near-black or low-chroma neutral, not pure black.
-- Primary surface: 82–96% opacity over the canvas.
+- Primary surface: 82–96% opacity over a plain canvas. When intentional background art/video is part of the design, use localized scrims and lower surface alpha as needed so the background remains recognizable rather than being washed into anonymous colour blobs.
+- Backdrop blur is not a default readability tool. Over intentional background media, prefer no blur or a light 0–8px blur; avoid large-area/full-screen blur above 8px unless loss of background detail is explicitly intended.
+- Verify background-media treatments at normal desktop and mobile viewing size. If the underlying scene/art can no longer be identified, reduce overlay opacity and/or blur before adding more decoration.
 - Borders: subtle neutral lines; stronger accent border only for focus, active state or a primary result.
 - One elevated hero/workspace surface per screen is normally enough.
 - Shadows should separate depth, not create neon halos.
