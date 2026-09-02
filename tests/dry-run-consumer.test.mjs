@@ -45,7 +45,7 @@ test('dry-run consumer workflow: starter -> verification -> handoff generation',
     persistence_changed: false,
   });
 
-  assert.equal(verificationReceipt.schema_version, 1);
+  assert.equal(verificationReceipt.schema_version, 2);
   assert.equal(verificationReceipt.repository, 'lawchai/pipeline-doctor');
   assert.equal(verificationReceipt.terminal_state, 'BLOCKED');
   assert.equal(verificationReceipt.executed_nonzero, false);
