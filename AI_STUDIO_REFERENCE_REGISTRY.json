@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "refreshed_at": "2026-09-02",
+  "refreshed_at": "2026-09-02T14:06:00Z",
   "authority": {
     "project_source": "LAWCHAI_PROJECT_SOURCE_EXECUTION_FIRST_V4_5_CONSUMER_PRIORITY_FULL.md",
     "mutable_truth": "GitHub",
@@ -163,7 +163,18 @@
       "Wandrer — new-road completion/progress across walk/run/hike/bike",
       "Strava — personal heatmaps/routes",
       "FOG/FogWalker class — local-first fog reveal and shareable maps"
-    ]
+    ],
+    "current_state": {
+      "canonical_repository": "lawchai/path-uncover",
+      "canonical_main_sha": "44a908aa5b6c37abd5404c08fa3c9cadb2cb33a2",
+      "canonical_verification_run": 33639802260,
+      "canonical_status": "INTEGRATED_VERIFIED_NOT_DEPLOYED",
+      "companion_repository": "lawchai/fog-of-war-exploration",
+      "companion_main_sha": "c2989f9f7209b80ee31c92434a098f845e95aedf",
+      "companion_verification_run": 33638643354,
+      "companion_status": "VERIFIED_REFERENCE_IMPLEMENTATION",
+      "composition": "GPX/geospatial reveal adapted into canonical Path Uncover; companion remains a focused reference/mechanic lane."
+    }
   },
   "fingerprinted_repositories": [
     {
