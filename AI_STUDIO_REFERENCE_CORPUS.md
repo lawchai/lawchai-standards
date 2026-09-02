@@ -99,7 +99,11 @@ The first value must not depend on signup.
 - GPX/geospatial source lineage: `lawchai/fog-of-war-exploration` PR #3, main `c2989f9f7209b80ee31c92434a098f845e95aedf`
 - sibling verification run: `33638643354` — SUCCESS
 - current canonical state: GPX import, derived-cell reveal/frontier, cumulative local map, walk/run/cycle/hike metadata, map-first progressive disclosure, Daily Exploration, Connections, Passport, Map Time Machine, privacy-boundary regression coverage, route-geometry privacy hardening, synthetic fallback, aggregate-only share/export
-- deployment/live verification: not recorded here; registry must not infer them from integration
+- public route: `https://lawchai.com/labs/path-uncover/`
+- publication carrier: `lawchai-labs/lawchai-site@471fdd9271f40b8877904640e21a9997fbdd03dc`
+- exact-main deployment run: `33657445723` — SUCCESS
+- Path Uncover live verification run: `33657445750` — SUCCESS; exact live payload, route headers and catalogue discovery executed successfully
+- current publication state: `CLOSED / LIVE_VERIFIED`; this is deployment evidence only and does not imply traction, retention, route quality, safety or live-GPS capability
 
 ## Registry maintenance
 
