@@ -47,8 +47,9 @@ test('dry-run consumer workflow: starter -> verification -> handoff generation',
 
   assert.equal(verificationReceipt.schema_version, 1);
   assert.equal(verificationReceipt.repository, 'lawchai/pipeline-doctor');
-  assert.equal(verificationReceipt.terminal_state, 'READY_PR');
-  assert.equal(verificationReceipt.executed_nonzero, true);
+  assert.equal(verificationReceipt.terminal_state, 'BLOCKED');
+  assert.equal(verificationReceipt.executed_nonzero, false);
+  assert.ok(verificationReceipt.blockers.some((blocker) => blocker.includes('tests execution evidence missing')));
 
   // Step 3: Generate handoff report for consumer
   const handoffInput = {
@@ -68,12 +69,12 @@ test('dry-run consumer workflow: starter -> verification -> handoff generation',
     ],
     verification: {
       test_command: 'npm test',
-      test_result: 'Pass',
+      test_result: 'NOT_RUN',
       zero_test_guard: 'passed',
-      typecheck_result: 'Pass',
-      lint_result: 'Pass',
-      build_result: 'Pass',
-      browser_journey_result: 'Pass (320px, 390px, desktop verified)',
+      typecheck_result: 'NOT_RUN',
+      lint_result: 'NOT_RUN',
+      build_result: 'NOT_RUN',
+      browser_journey_result: 'NOT_RUN',
     },
     semantic_contract: {
       public_signatures_changed: false,
@@ -102,15 +103,16 @@ test('dry-run consumer workflow: starter -> verification -> handoff generation',
     blockers: [],
     unknowns: [],
     rejected_alternatives: ['Custom handwritten workflow configuration'],
-    terminal_state: 'READY_PR',
-    exact_next_action: 'Submit PR for lawchai/pipeline-doctor baseline integration',
+    terminal_state: '[BLOCKED]',
+    exact_next_action: 'Run exact-head consumer verification and regenerate the handoff with execution evidence',
   };
 
   const handoffReportMd = generateHandoffMarkdown(handoffInput);
 
   assert.ok(handoffReportMd.includes('## Outcome'));
   assert.ok(handoffReportMd.includes('lawchai/pipeline-doctor'));
-  assert.ok(handoffReportMd.includes('READY_PR'));
+  assert.ok(handoffReportMd.includes('[BLOCKED]'));
+  assert.ok(handoffReportMd.includes('NOT_RUN'));
 
   // Clean up
   fs.rmSync(consumerDir, { recursive: true, force: true });
