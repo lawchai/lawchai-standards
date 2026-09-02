@@ -94,16 +94,16 @@ The first value must not depend on signup.
 
 ## Current composition evidence
 
-- canonical Path Uncover main: `3e0107971bde88601cc53d51014f9e09972d7410`
-- canonical integrated verification run: `33656618789` — deterministic + 390px browser jobs executed successfully
+- canonical Path Uncover main: `d5951a5523a0c946b6537707c0d42469b9a3997e`
+- canonical exact-source verification: portable carrier `lawchai-labs/lawchai-site` run `33664368451` — SUCCESS; 36 Git-blob-bound files, 93/93 deterministic tests, 13-file build, Chrome 151, exact playwright-core@1.62.1, responsive browser smoke and launch gate
 - GPX/geospatial source lineage: `lawchai/fog-of-war-exploration` PR #3, main `c2989f9f7209b80ee31c92434a098f845e95aedf`
 - sibling verification run: `33638643354` — SUCCESS
 - current canonical state: GPX import, derived-cell reveal/frontier, cumulative local map, walk/run/cycle/hike metadata, map-first progressive disclosure, Daily Exploration, Connections, Passport, Map Time Machine, privacy-boundary regression coverage, route-geometry privacy hardening, synthetic fallback, aggregate-only share/export
 - public route: `https://lawchai.com/labs/path-uncover/`
-- publication carrier: `lawchai-labs/lawchai-site@471fdd9271f40b8877904640e21a9997fbdd03dc`
-- exact-main deployment run: `33657445723` — SUCCESS
-- Path Uncover live verification run: `33657445750` — SUCCESS; exact live payload, route headers and catalogue discovery executed successfully
-- current publication state: `CLOSED / LIVE_VERIFIED`; this is deployment evidence only and does not imply traction, retention, route quality, safety or live-GPS capability
+- publication carrier: `lawchai-labs/lawchai-site@5d2acac273444065ebe0db328f326aa2619c8658`
+- exact-main deployment run: `33666089039` — SUCCESS
+- Path Uncover live verification run: `33666088955` — SUCCESS; exact live payload including foreground GPS module, CSP/cache/nosniff, same-origin geolocation policy and catalogue discovery executed successfully
+- current publication state: `CLOSED / LIVE_VERIFIED`; foreground browser GPS is proven live, while reliable background/screen-off tracking, traction, retention, route quality and safety remain unproven
 
 ## Registry maintenance
 
