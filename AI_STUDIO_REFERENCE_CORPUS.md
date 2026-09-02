@@ -48,7 +48,7 @@ The full machine-readable candidate set is in `AI_STUDIO_REFERENCE_REGISTRY.json
 
 ## Priority-#2 path exploration reference set
 
-`lawchai/path-uncover` and `lawchai/fog-of-war-exploration` currently exist as empty private repository shells. The broad canonical product should consume proven/reusable mechanics rather than start from a blank model prompt.
+`lawchai/path-uncover` is now the canonical implemented product and `lawchai/fog-of-war-exploration` is a verified companion/reference lane. Path Uncover main `44a908aa5b6c37abd5404c08fa3c9cadb2cb33a2` composes the sibling GPX/geospatial reveal mechanism while preserving its own movement modes, local-state quarantine and privacy-safe sharing. The companion main `c2989f9f7209b80ee31c92434a098f845e95aedf` remains useful as a focused mechanic/reference implementation.
 
 Reference intentionally:
 
@@ -91,6 +91,15 @@ The core is:
 Initial supported activity language should remain broad: **walk / run / cycle / hike**. Mode-specific scoring may arrive later; the exploration primitive is shared.
 
 The first value must not depend on signup.
+
+## Current composition evidence
+
+- canonical Path Uncover main: `44a908aa5b6c37abd5404c08fa3c9cadb2cb33a2`
+- canonical integrated verification run: `33639802260` — deterministic + 390px browser jobs executed successfully
+- GPX/geospatial source lineage: `lawchai/fog-of-war-exploration` PR #3, main `c2989f9f7209b80ee31c92434a098f845e95aedf`
+- sibling verification run: `33638643354` — SUCCESS
+- current canonical state: GPX import, derived-cell reveal/frontier, cumulative local map, walk/run/cycle/hike metadata, synthetic fallback, aggregate-only share/export
+- deployment/live verification: not recorded here; registry must not infer them from integration
 
 ## Registry maintenance
 
