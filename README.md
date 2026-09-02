@@ -1,6 +1,6 @@
 # LawChai Standards
 
-Central, version-controlled delivery standards for the LawChai repository portfolio.
+Central, version-controlled delivery standards and reusable machinery for the LawChai repository portfolio.
 
 ## Human-only control repository
 
@@ -9,7 +9,7 @@ This repository is a portfolio-wide trust root and is maintained by the human ow
 - Do not dispatch Jules or another coding agent against this repository.
 - Do not label work here as agent-ready.
 - Review every workflow change manually.
-- Consumer repositories must reference reusable workflows by a full commit SHA.
+- Consumer repositories must reference reusable workflows and composite actions by a full commit SHA.
 - Version tags are for human navigation; they are not the security boundary.
 
 ## Portfolio operating principle
@@ -32,24 +32,88 @@ The global queue remains capped at three only for:
 - deployment or public-release decisions with irreversible risk;
 - promotion candidates awaiting homepage or flagship selection.
 
-## Project-wide context bootstrap
+## LawChai Reuse Factory
 
-New LawChai chats are not blank projects. Before making implementation-state claims or requesting repeated inputs, the assistant should:
+The Reuse Factory eliminates repeated scaffolding and operator relay work across LawChai web products through three native mechanisms:
 
-1. read the active project instructions and canonical handoff/context files;
-2. search recent LawChai project conversations and File Library uploads for the named work;
-3. inspect GitHub for current code, branches, PRs, CI and deployment state;
-4. use GitHub as the source of truth for live implementation while using chats and uploaded files to recover intent, archives and prior evidence;
-5. distinguish “not available in this runtime” from “never supplied”;
-6. store durable repository-specific decisions in repository documentation, issues and PRs rather than relying only on conversational memory.
+### 1. Product Starter Baseline
 
-This reduces repeated questions and prevents a new chat from discarding earlier project work. It does not make chat summaries authoritative over current GitHub state.
+A pinned, reusable web-product scaffold (`starter/`) with configurable product-contract metadata (`product-contract.json`), canonical local storage & evidence primitives (`src/lib/storage.ts`, `src/lib/evidence.ts`), accessibility standards, and deterministic test baseline.
+
+Scaffold a new consumer project using:
+
+```bash
+node scripts/init-starter.mjs \
+  --id my-app \
+  --title "My LawChai App" \
+  --purpose "Product purpose" \
+  --standards-sha <40-character-SHA> \
+  --output ../my-app
+```
+
+### 2. Verification Factory
+
+Reusable CI actions and verification scripts (`.github/actions/verification-factory`) enforcing deterministic checks expected by LawChai:
+
+- Per-PR structured scope check (`.github/lawchai-scope.yml`);
+- Zero-test execution guard;
+- TypeScript typecheck, lint, and production build;
+- Mobile viewports (320px, 390px) and accessibility baseline checks;
+- Exact-head schema v1 verification receipt generation.
+
+Call the action in workflows:
+
+```yaml
+- name: Run LawChai Verification Factory
+  uses: lawchai/lawchai-standards/.github/actions/verification-factory@<40-character-SHA>
+  with:
+    risk_class: 'low'
+```
+
+### 3. Schema-driven Handoff Generator
+
+A schema-driven generator (`scripts/generate-handoff.mjs` & `schemas/handoff-report.schema.json`) for PR terminal reports that persists exact head, scope, changes, verification results, semantic contract declarations, blockers, unknowns, and next action.
+
+Generate a report from structured JSON input:
+
+```bash
+node scripts/generate-handoff.mjs --input report.json --output PULL_REQUEST_REPORT.md
+```
+
+## Governance, Pinning, Upgrade & Escape-Hatch Rules
+
+### Adoption Rules
+
+1. New LawChai repositories should scaffold from the starter baseline via `scripts/init-starter.mjs`.
+2. Existing repositories adopt standards by binding `.github/lawchai-scope.yml` and calling the pinned reusable workflows.
+3. Every adoption must preserve existing product semantics and domain capabilities.
+
+### Pinning Rules
+
+1. Reusable workflows and composite actions MUST be referenced using a full 40-character Git commit SHA.
+2. Branch names (`main`, `v1`), movable tags, or abbreviated commit hashes are prohibited as workflow references.
+3. Pin references are immutable; changing the standards revision requires updating the 40-character commit SHA in the caller repository.
+
+### Upgrade Rules
+
+1. Upgrades to `lawchai-standards` reusable actions or workflows are explicit PR changes in consumer repositories.
+2. An upgrade PR must update the full commit SHA reference and run the repository's verification checks to confirm compatibility.
+3. Automated tools must not silently modify consumer SHA references without running the full test suite.
+
+### Escape-Hatch Rules
+
+1. If a consumer repository requires product-specific verification logic, custom build hooks, or additional checks beyond standard workflows:
+   - Extend local repository scripts in `package.json` (e.g. custom `test` or `build` scripts).
+   - Document any authorized exceptions in `product-contract.json` under `risk_class` or `claims`.
+2. Do not fork or modify central standards workflows directly within a consumer repository.
+3. If central standards are genuinely incompatible, open an exception issue or PR against `lawchai-standards` for human review.
 
 ## Current responsibility
 
-This repository owns reusable GitHub Actions workflows and durable portfolio delivery contracts. Product repositories keep their own repository-specific:
+This repository owns reusable GitHub Actions workflows, composite actions, and durable portfolio delivery contracts. Product repositories keep their own repository-specific:
 
 - `AGENTS.md`
+- `product-contract.json`
 - `QUALITY_GATE.md`
 - agent-task issue template
 - small caller workflow
@@ -84,25 +148,6 @@ allowed_paths:
 The scope file must authorise itself and every changed path. CI fails when the file is inherited unchanged, missing, malformed or incomplete, preventing silent reuse of a previous task's authorisation.
 
 This produces the required check name `LawChai CI / verify`. Do not rename the caller job display name or the reusable `verify` job without updating repository rulesets in the same controlled change.
-
-The candidate workflow in issue #5 verifies:
-
-- required per-PR structured `allowed_paths` YAML against `git diff --name-only`;
-- a visible warning and summary when meaningful source/test changes exceed approximately 250 lines, without failing solely for size;
-- locked dependency installation with `npm ci`;
-- a real build command;
-- TypeScript verification through either `typecheck` or a build invoking `tsc`;
-- tracked test files, including conventional `tests/` and `__tests__/` directories, are not present without a test script;
-- configured test scripts are not obvious no-op stubs and do not permit successful zero-test runs;
-- configured typecheck, lint and test commands;
-- production build success;
-- verification leaves no modified or untracked non-ignored files;
-- resulting bundle size for accumulation tracking;
-- obsolete runs are cancelled when a newer commit is pushed to the same pull request.
-
-Until issue #5 is reviewed, merged and consumers are individually repinned to its immutable merge SHA, existing consumers retain the prior hard line-count behaviour.
-
-A green build does not imply automated test coverage when no test files exist. The workflow states that explicitly in its run summary. Test quality, issue-scope compliance and semantic-contract correctness remain review responsibilities.
 
 ## Review boundary
 

@@ -83,28 +83,29 @@ A manifest alone is not meaningful PWA verification.
 
 Prefer portable modules/contracts over a giant shared runtime. Candidates include:
 
-- evidence/provenance records;
+- evidence/provenance records (`starter/src/lib/evidence.ts`);
 - deterministic receipt/export helpers;
-- local persistence + migration helpers;
+- local persistence + migration helpers (`starter/src/lib/storage.ts`);
 - workflow state machines;
 - browser verification harnesses;
-- handoff/terminal-state schemas;
-- scope declarations;
+- handoff/terminal-state schemas (`schemas/handoff-report.schema.json`);
+- scope declarations (`.github/lawchai-scope.yml`);
 - common UI tokens/accessibility helpers.
 
 Each module must have an explicit owner, contract, version/pin strategy, deterministic tests, and replacement path. Do not create a shared dependency merely because two products have similar-looking code.
 
 ## 8. Adoption procedure
 
-1. Pin the baseline revision.
-2. Compare the target repository against the baseline.
+1. Pin the baseline revision using `node scripts/init-starter.mjs --standards-sha <40-char-sha>`.
+2. Compare the target repository against the baseline (`starter/`).
 3. Select only applicable modules/checks.
-4. Record deviations and why they are necessary.
+4. Record deviations and why they are necessary in `product-contract.json`.
 5. Implement in an isolated mutation scope.
-6. Run deterministic verification.
+6. Run deterministic verification with `.github/actions/verification-factory`.
 7. Run browser/accessibility checks when materially implicated.
 8. Reconcile exact base/head, changed paths, reviews/threads and ownership.
-9. Terminalise as `READY_PR`, `[BLOCKED]`, or `UNCHANGED_FAILURE`.
+9. Generate terminal handoff report using `scripts/generate-handoff.mjs`.
+10. Terminalise as `READY_PR`, `[BLOCKED]`, or `UNCHANGED_FAILURE`.
 
 Adoption does not imply merge, deployment, homepage promotion, flagship status, or production use.
 
@@ -123,7 +124,7 @@ For third-party code, separately apply the licence/provenance/security gate. Thi
 
 ## 10. Verification factory interface
 
-A future automated verifier should accept:
+The implemented verifier (`.github/actions/verification-factory`) accepts:
 
 ```yaml
 repository: owner/name
@@ -137,7 +138,7 @@ persistence_changed: false
 risk_class: low|medium|high
 ```
 
-It should emit:
+It emits:
 
 ```yaml
 terminal_state: READY_PR|BLOCKED|UNCHANGED_FAILURE
@@ -150,7 +151,7 @@ next_action: <one exact action>
 verified_at: <timestamp>
 ```
 
-This interface is deliberately declarative so a later Verification Factory can consume it without depending on natural-language PR prose.
+This interface is implemented deterministically in `.github/actions/verification-factory/verification-factory.mjs`.
 
 ## 11. Promotion boundary
 
@@ -160,4 +161,4 @@ The baseline is intended to make creation and publication cheaper and more consi
 
 ## 12. Expected benefit
 
-The baseline should reduce repeated bootstrap work, make product quality more deterministic, and provide a direct feed into the planned Verification Factory and Handoff Generator. It should not become a reason to block cheap experiments or force unrelated products into one architecture.
+The baseline reduces repeated bootstrap work, makes product quality more deterministic, and directly feeds the Verification Factory and Handoff Generator. It does not block cheap experiments or force unrelated products into one architecture.

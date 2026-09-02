@@ -1,0 +1,76 @@
+name: 'LawChai Verification Factory'
+description: 'Reusable verification factory composite action enforcing LawChai deterministic checks, zero-test guard, and exact-head receipts.'
+
+inputs:
+  base_sha:
+    description: 'Base Git commit SHA'
+    required: false
+  head_sha:
+    description: 'Head Git commit SHA'
+    required: false
+  risk_class:
+    description: 'Risk class (low, medium, high)'
+    required: false
+    default: 'low'
+  semantic_contract_changed:
+    description: 'Whether public semantic contract changed'
+    required: false
+    default: 'false'
+  persistence_changed:
+    description: 'Whether storage schema or persistence changed'
+    required: false
+    default: 'false'
+  browser_required:
+    description: 'Whether browser/accessibility execution evidence is required'
+    required: false
+    default: 'false'
+  verification_environment:
+    description: 'Execution environment identity used by supplied evidence'
+    required: false
+    default: ''
+  evidence_json:
+    description: 'JSON execution evidence keyed by tests/typecheck/lint/build/browser; PASS claims must match head_sha and environment'
+    required: false
+    default: '{}'
+
+outputs:
+  terminal_state:
+    description: 'Terminal state: READY_PR | BLOCKED | UNCHANGED_FAILURE'
+    value: ${{ steps.run-verifier.outputs.terminal_state }}
+  executed_nonzero:
+    description: 'Whether non-zero tests were executed'
+    value: ${{ steps.run-verifier.outputs.executed_nonzero }}
+  receipt_json:
+    description: 'Full JSON verification receipt'
+    value: ${{ steps.run-verifier.outputs.receipt_json }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Execute LawChai Verification Factory Engine
+      id: run-verifier
+      shell: bash
+      env:
+        BASE_SHA: ${{ inputs.base_sha || github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ inputs.head_sha || github.event.pull_request.head.sha || github.sha }}
+        RISK_CLASS: ${{ inputs.risk_class }}
+        SEMANTIC_CONTRACT_CHANGED: ${{ inputs.semantic_contract_changed }}
+        PERSISTENCE_CHANGED: ${{ inputs.persistence_changed }}
+        BROWSER_REQUIRED: ${{ inputs.browser_required }}
+        VERIFICATION_ENVIRONMENT: ${{ inputs.verification_environment }}
+        VERIFICATION_EVIDENCE_JSON: ${{ inputs.evidence_json }}
+      run: |
+        RECEIPT=$(node "$GITHUB_ACTION_PATH/verification-factory.mjs")
+        {
+          echo 'receipt_json<<LAWCHAI_RECEIPT_EOF'
+          echo "$RECEIPT"
+          echo 'LAWCHAI_RECEIPT_EOF'
+        } >> "$GITHUB_OUTPUT"
+        STATE=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.terminal_state);")
+        NONZERO=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.executed_nonzero);")
+        echo "terminal_state=$STATE" >> $GITHUB_OUTPUT
+        echo "executed_nonzero=$NONZERO" >> $GITHUB_OUTPUT
+        if [ "$STATE" = "BLOCKED" ]; then
+          echo "Verification Factory declared terminal state BLOCKED."
+          exit 1
+        fi
