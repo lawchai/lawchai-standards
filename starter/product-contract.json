@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "id": "lawchai-product-starter",
+  "title": "LawChai Product Starter",
+  "purpose": "Baseline web-product starter for LawChai applications",
+  "distinct_mechanism": "Standardized React/TypeScript web-product shell with evidence tracking and local persistence",
+  "owner": "lawchai",
+  "repository": "lawchai/lawchai-product-starter",
+  "standards_sha": "0000000000000000000000000000000000000000",
+  "risk_class": "low",
+  "synthetic_data": {
+    "used": true,
+    "disclosure_location": "README.md"
+  },
+  "claims": {
+    "users": "unknown",
+    "customers": "unknown",
+    "adoption": "unknown"
+  }
+}

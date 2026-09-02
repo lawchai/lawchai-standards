@@ -1,0 +1,9 @@
+name: LawChai CI
+
+on:
+  pull_request:
+
+jobs:
+  ci:
+    name: LawChai CI
+    uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@0000000000000000000000000000000000000000

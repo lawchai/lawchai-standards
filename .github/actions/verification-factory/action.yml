@@ -1,0 +1,57 @@
+name: 'LawChai Verification Factory'
+description: 'Reusable verification factory composite action enforcing LawChai deterministic checks, zero-test guard, and exact-head receipts.'
+
+inputs:
+  base_sha:
+    description: 'Base Git commit SHA'
+    required: false
+  head_sha:
+    description: 'Head Git commit SHA'
+    required: false
+  risk_class:
+    description: 'Risk class (low, medium, high)'
+    required: false
+    default: 'low'
+  semantic_contract_changed:
+    description: 'Whether public semantic contract changed'
+    required: false
+    default: 'false'
+  persistence_changed:
+    description: 'Whether storage schema or persistence changed'
+    required: false
+    default: 'false'
+
+outputs:
+  terminal_state:
+    description: 'Terminal state: READY_PR | BLOCKED | UNCHANGED_FAILURE'
+    value: ${{ steps.run-verifier.outputs.terminal_state }}
+  executed_nonzero:
+    description: 'Whether non-zero tests were executed'
+    value: ${{ steps.run-verifier.outputs.executed_nonzero }}
+  receipt_json:
+    description: 'Full JSON verification receipt'
+    value: ${{ steps.run-verifier.outputs.receipt_json }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Execute LawChai Verification Factory Engine
+      id: run-verifier
+      shell: bash
+      env:
+        BASE_SHA: ${{ inputs.base_sha || github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ inputs.head_sha || github.event.pull_request.head.sha || github.sha }}
+        RISK_CLASS: ${{ inputs.risk_class }}
+        SEMANTIC_CONTRACT_CHANGED: ${{ inputs.semantic_contract_changed }}
+        PERSISTENCE_CHANGED: ${{ inputs.persistence_changed }}
+      run: |
+        RECEIPT=$(node "$GITHUB_ACTION_PATH/verification-factory.mjs")
+        echo "receipt_json=$RECEIPT" >> $GITHUB_OUTPUT
+        STATE=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.terminal_state);")
+        NONZERO=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.executed_nonzero);")
+        echo "terminal_state=$STATE" >> $GITHUB_OUTPUT
+        echo "executed_nonzero=$NONZERO" >> $GITHUB_OUTPUT
+        if [ "$STATE" = "BLOCKED" ]; then
+          echo "Verification Factory declared terminal state BLOCKED."
+          exit 1
+        fi
