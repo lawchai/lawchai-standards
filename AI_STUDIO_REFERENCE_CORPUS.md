@@ -48,7 +48,7 @@ The full machine-readable candidate set is in `AI_STUDIO_REFERENCE_REGISTRY.json
 
 ## Priority-#2 path exploration reference set
 
-`lawchai/path-uncover` is now the canonical implemented product and `lawchai/fog-of-war-exploration` is a verified companion/reference lane. Path Uncover main `44a908aa5b6c37abd5404c08fa3c9cadb2cb33a2` composes the sibling GPX/geospatial reveal mechanism while preserving its own movement modes, local-state quarantine and privacy-safe sharing. The companion main `c2989f9f7209b80ee31c92434a098f845e95aedf` remains useful as a focused mechanic/reference implementation.
+`lawchai/path-uncover` is now the canonical implemented product and `lawchai/fog-of-war-exploration` is a verified companion/reference lane. Path Uncover main `3e0107971bde88601cc53d51014f9e09972d7410` composes the sibling GPX/geospatial reveal mechanism while preserving its own movement modes, local-state quarantine and privacy-safe sharing. The companion main `c2989f9f7209b80ee31c92434a098f845e95aedf` remains useful as a focused mechanic/reference implementation.
 
 Reference intentionally:
 
@@ -94,11 +94,11 @@ The first value must not depend on signup.
 
 ## Current composition evidence
 
-- canonical Path Uncover main: `44a908aa5b6c37abd5404c08fa3c9cadb2cb33a2`
-- canonical integrated verification run: `33639802260` — deterministic + 390px browser jobs executed successfully
+- canonical Path Uncover main: `3e0107971bde88601cc53d51014f9e09972d7410`
+- canonical integrated verification run: `33656618789` — deterministic + 390px browser jobs executed successfully
 - GPX/geospatial source lineage: `lawchai/fog-of-war-exploration` PR #3, main `c2989f9f7209b80ee31c92434a098f845e95aedf`
 - sibling verification run: `33638643354` — SUCCESS
-- current canonical state: GPX import, derived-cell reveal/frontier, cumulative local map, walk/run/cycle/hike metadata, synthetic fallback, aggregate-only share/export
+- current canonical state: GPX import, derived-cell reveal/frontier, cumulative local map, walk/run/cycle/hike metadata, map-first progressive disclosure, Daily Exploration, Connections, Passport, Map Time Machine, privacy-boundary regression coverage, route-geometry privacy hardening, synthetic fallback, aggregate-only share/export
 - deployment/live verification: not recorded here; registry must not infer them from integration
 
 ## Registry maintenance
