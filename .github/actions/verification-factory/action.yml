@@ -20,6 +20,18 @@ inputs:
     description: 'Whether storage schema or persistence changed'
     required: false
     default: 'false'
+  browser_required:
+    description: 'Whether browser/accessibility execution evidence is required'
+    required: false
+    default: 'false'
+  verification_environment:
+    description: 'Execution environment identity used by supplied evidence'
+    required: false
+    default: ''
+  evidence_json:
+    description: 'JSON execution evidence keyed by tests/typecheck/lint/build/browser; PASS claims must match head_sha and environment'
+    required: false
+    default: '{}'
 
 outputs:
   terminal_state:
@@ -44,9 +56,16 @@ runs:
         RISK_CLASS: ${{ inputs.risk_class }}
         SEMANTIC_CONTRACT_CHANGED: ${{ inputs.semantic_contract_changed }}
         PERSISTENCE_CHANGED: ${{ inputs.persistence_changed }}
+        BROWSER_REQUIRED: ${{ inputs.browser_required }}
+        VERIFICATION_ENVIRONMENT: ${{ inputs.verification_environment }}
+        VERIFICATION_EVIDENCE_JSON: ${{ inputs.evidence_json }}
       run: |
         RECEIPT=$(node "$GITHUB_ACTION_PATH/verification-factory.mjs")
-        echo "receipt_json=$RECEIPT" >> $GITHUB_OUTPUT
+        {
+          echo 'receipt_json<<LAWCHAI_RECEIPT_EOF'
+          echo "$RECEIPT"
+          echo 'LAWCHAI_RECEIPT_EOF'
+        } >> "$GITHUB_OUTPUT"
         STATE=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.terminal_state);")
         NONZERO=$(echo "$RECEIPT" | node -e "const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(r.executed_nonzero);")
         echo "terminal_state=$STATE" >> $GITHUB_OUTPUT
