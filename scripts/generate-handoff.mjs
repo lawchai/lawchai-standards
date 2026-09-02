@@ -74,13 +74,7 @@ export function generateHandoffMarkdown(data) {
   const consumers = (sem.consumers_searched || []).map((c) => `- \`${c}\``).join('\n') || '- None';
 
   const ver = data.verification || {};
-  const verTable = `| Check | Command or evidence | Result |
-|---|---|---|
-| Deterministic tests | \`${ver.test_command || 'npm test'}\` | ${ver.test_result || 'Pass'} |
-| Type check | \`npm run typecheck\` | ${ver.typecheck_result || 'Pass'} |
-| Lint | \`npm run lint\` | ${ver.lint_result || 'Pass'} |
-| Build | \`npm run build\` | ${ver.build_result || 'Pass'} |
-| Browser journey | Visual / Mobile checks | ${ver.browser_journey_result || 'Pass'} |`;
+  const verTable = `| Check | Command or evidence | Result |\n|---|---|---|\n| Deterministic tests | \`${ver.test_command || 'UNKNOWN'}\` | ${ver.test_result || 'UNKNOWN'} |\n| Type check | \`npm run typecheck\` | ${ver.typecheck_result || 'UNKNOWN'} |\n| Lint | \`npm run lint\` | ${ver.lint_result || 'UNKNOWN'} |\n| Build | \`npm run build\` | ${ver.build_result || 'UNKNOWN'} |\n| Browser journey | Visual / Mobile checks | ${ver.browser_journey_result || 'NOT_RUN'} |`;
 
   const acc = data.accessibility || {};
   const accList = `- [${acc.keyboard_only ? 'x' : ' '}] Keyboard-only journey
@@ -92,9 +86,9 @@ export function generateHandoffMarkdown(data) {
 - [${acc.touch_targets_44 ? 'x' : ' '}] 44×44 controls where applicable`;
 
   const sec = data.security_privacy_data || {};
-  const secText = `- Secrets exposed: ${sec.secrets_exposed ? 'YES (BLOCKER)' : 'No'}
-- Sensitive real data used: ${sec.sensitive_real_data_used ? 'Yes' : 'No'}
-- Synthetic-data disclosure: ${sec.synthetic_data_disclosure || 'Present'}`;
+  const secretsState = sec.secrets_exposed === true ? 'YES (BLOCKER)' : sec.secrets_exposed === false ? 'No' : 'UNKNOWN';
+  const sensitiveDataState = sec.sensitive_real_data_used === true ? 'Yes' : sec.sensitive_real_data_used === false ? 'No' : 'UNKNOWN';
+  const secText = `- Secrets exposed: ${secretsState}\n- Sensitive real data used: ${sensitiveDataState}\n- Synthetic-data disclosure: ${sec.synthetic_data_disclosure || 'UNKNOWN'}`;
 
   const blockers = (data.blockers || []).map((b) => `- ${b}`).join('\n') || '- None';
   const unknowns = (data.unknowns || []).map((u) => `- ${u}`).join('\n') || '- None';
@@ -142,7 +136,7 @@ Exact head SHA: \`${data.head_sha}\`
 
 ${verTable}
 
-Zero-test guard: ${ver.zero_test_guard || 'passed'}
+Zero-test guard: ${ver.zero_test_guard || 'UNKNOWN'}
 
 ## Accessibility
 
