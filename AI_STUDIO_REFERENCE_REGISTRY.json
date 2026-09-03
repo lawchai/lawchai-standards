@@ -2,7 +2,7 @@
   "schema_version": 1,
   "refreshed_at": "2026-09-02T18:16:23Z",
   "authority": {
-    "project_source": "LAWCHAI_PROJECT_SOURCE_EXECUTION_FIRST_V4_5_CONSUMER_PRIORITY_FULL.md",
+    "project_source": "LAWCHAI_PROJECT_SOURCE_EXECUTION_FIRST_V5_3_LEARN_REMEMBER_DURABLE_MEMORY(1).md",
     "mutable_truth": "GitHub",
     "rule": "Generated apps are reference/design/feature candidates until deliberately adopted; preserve raw originals separately from sanitized/adopted derivatives."
   },
