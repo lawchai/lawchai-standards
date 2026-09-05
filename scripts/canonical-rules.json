@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-05T12:01:00Z",
+  "rules": [
+    {
+      "id": "rule-workflow-sha-pinning",
+      "title": "Immutable Full Commit SHA Pinning for Workflows and Actions",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "README.md",
+      "section": "Pinning Rules",
+      "summary": "Reusable workflows and composite actions must be referenced using a full 40-character Git commit SHA. Branch names (main, v1) and mutable tags are strictly prohibited as workflow references.",
+      "supersedes": ["rule-mutable-branch-workflow-references"],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@main",
+        "uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@v1",
+        "uses: lawchai/lawchai-standards/.github/actions/verification-factory@main",
+        "reference reusable workflows by branch name"
+      ],
+      "provenance": {
+        "origin_document": "README.md",
+        "rationale": "Prevents supply-chain mutation and ensures callers bind to audited, immutable workflow revisions.",
+        "historical_context": "Replaced earlier mutable branch references across LawChai consumer repositories."
+      },
+      "tags": ["ci", "security", "pinning", "workflows"]
+    },
+    {
+      "id": "rule-per-pr-scope-declaration",
+      "title": "Per-PR Structured Scope Contract Declaration",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "CI_SCOPE_CONTRACT.md",
+      "section": "Rules",
+      "summary": "Every implementation pull request must add or modify .github/lawchai-scope.yml on its own branch declaring allowed_paths. Inherited scope metadata fails CI to prevent silent reuse of prior PR authorizations.",
+      "supersedes": ["rule-inherited-scope-reuse"],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "inherited scope metadata from previous PR",
+        "skip .github/lawchai-scope.yml update",
+        "reusing scope declaration without file change"
+      ],
+      "provenance": {
+        "origin_document": "CI_SCOPE_CONTRACT.md",
+        "rationale": "Enforces strict authorization boundaries per pull request.",
+        "historical_context": "Established to prevent out-of-scope code changes across portfolio dispatches."
+      },
+      "tags": ["ci", "scope", "authorization", "governance"]
+    },
+    {
+      "id": "rule-non-zero-test-execution",
+      "title": "Non-Zero Deterministic Test Execution Guard",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "AGENTS.md",
+      "section": "Mandatory automated verification",
+      "summary": "Every implementation dispatch must execute configured tests and prove non-zero executed test count. Test-file presence alone or zero-count test execution fails verification.",
+      "supersedes": ["rule-test-file-presence-pass"],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "test file presence alone constitutes verification",
+        "zero tests executed treated as pass",
+        "executed_nonzero: false marked as READY_PR"
+      ],
+      "provenance": {
+        "origin_document": "AGENTS.md",
+        "rationale": "Guarantees test suites actually execute assertions rather than reporting false green CI.",
+        "historical_context": "Replaced early posture where test file presence was incorrectly treated as passing test execution."
+      },
+      "tags": ["testing", "verification", "ci", "quality"]
+    },
+    {
+      "id": "rule-verified-closure-deploy",
+      "title": "Verified Closure Deployment Identity Contract",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "VERIFIED_CLOSURE_CONTRACT.md",
+      "section": "Purpose",
+      "summary": "Verified Closure compares a live deployment identity document (/version) with the expected commit SHA. Deployment command success alone is not verified deployment.",
+      "supersedes": ["rule-unverified-deploy-success"],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "deployment command exit 0 implies verified deployment",
+        "assume deployment success without version document",
+        "deploy step completion is sufficient evidence"
+      ],
+      "provenance": {
+        "origin_document": "VERIFIED_CLOSURE_CONTRACT.md",
+        "rationale": "Ensures deployed artifacts are verifiably matching expected source commits in production.",
+        "historical_context": "Introduced to eliminate false deployment confirmations."
+      },
+      "tags": ["deploy", "verification", "identity"]
+    },
+    {
+      "id": "rule-human-trust-root-boundary",
+      "title": "Human-Only Control Boundary for Portfolio Trust Root",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "AGENTS.md",
+      "section": "Human-only control boundary",
+      "summary": "lawchai-standards is the portfolio-wide trust root. Dispatching autonomous agents directly without human authorization and manual review is prohibited.",
+      "supersedes": [],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "dispatch autonomous agent directly against trust root without authorization"
+      ],
+      "provenance": {
+        "origin_document": "AGENTS.md",
+        "rationale": "Protects portfolio-wide reusable CI and standards integrity.",
+        "historical_context": "Core trust boundary of LawChai standards infrastructure."
+      },
+      "tags": ["governance", "trust-root", "security"]
+    },
+    {
+      "id": "rule-terminal-state-handoff",
+      "title": "Mandatory Terminal State and Schema-Driven Handoff",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "AGENTS.md",
+      "section": "Mandatory terminal state",
+      "summary": "Every task must reach exactly one terminal state: READY_PR, [BLOCKED] draft PR, or UNCHANGED_FAILURE, with schema-driven handoff report generated.",
+      "supersedes": ["rule-informal-pr-completion"],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "complete dispatch without terminal report",
+        "leaving uncommitted modified branch without PR",
+        "terminal state READY without handoff validation"
+      ],
+      "provenance": {
+        "origin_document": "AGENTS.md",
+        "rationale": "Ensures reproducible task completion and explicit handoff evidence.",
+        "historical_context": "Standardized across all LawChai dispatch brief templates."
+      },
+      "tags": ["governance", "handoff", "workflow"]
+    },
+    {
+      "id": "rule-ui-premium-standard",
+      "title": "Governed Premium UI Standard Hierarchy and Accessibility",
+      "status": "canonical",
+      "version": "1.0",
+      "source_file": "PREMIUM_UI_STANDARD.md",
+      "section": "Objective",
+      "summary": "UI modifications must preserve visual hierarchy, product-specific identity, 44px controls, 3px focus outlines, 320/390px responsive viewports, and semantic state colors.",
+      "supersedes": [],
+      "superseded_by": null,
+      "deprecated_patterns": [
+        "generic dark card styling without product identity",
+        "recolouring warning or error semantic states to brand accent",
+        "controls under 44px touch target"
+      ],
+      "provenance": {
+        "origin_document": "PREMIUM_UI_STANDARD.md",
+        "rationale": "Prevents generic UI convergence and enforces accessibility standards across web apps.",
+        "historical_context": "Derived from portfolio UI audit."
+      },
+      "tags": ["ui", "accessibility", "design"]
+    },
+    {
+      "id": "rule-mutable-branch-workflow-references",
+      "title": "Mutable Branch Workflow References (Superseded)",
+      "status": "superseded",
+      "version": "0.1",
+      "source_file": "README.md",
+      "section": "Governance, Pinning, Upgrade & Escape-Hatch Rules",
+      "summary": "Referencing central workflows via branch names like @main or @v1.",
+      "supersedes": [],
+      "superseded_by": "rule-workflow-sha-pinning",
+      "deprecated_patterns": [
+        "uses: lawchai/lawchai-standards/.github/workflows/ci-react-ts.yml@main"
+      ],
+      "provenance": {
+        "origin_document": "README.md",
+        "rationale": "Superseded because branch references allowed unverified workflow updates.",
+        "historical_context": "Early practice before immutable SHA pinning was mandated across portfolio."
+      },
+      "tags": ["ci", "deprecated"]
+    },
+    {
+      "id": "rule-inherited-scope-reuse",
+      "title": "Inherited Scope Metadata Reuse (Superseded)",
+      "status": "superseded",
+      "version": "0.1",
+      "source_file": "CI_SCOPE_CONTRACT.md",
+      "section": "Rules",
+      "summary": "Reusing .github/lawchai-scope.yml from prior merged PRs without re-authorizing in the active PR diff.",
+      "supersedes": [],
+      "superseded_by": "rule-per-pr-scope-declaration",
+      "deprecated_patterns": [
+        "inherited scope metadata from previous PR"
+      ],
+      "provenance": {
+        "origin_document": "CI_SCOPE_CONTRACT.md",
+        "rationale": "Superseded because inherited scope bypasses per-PR file modification checks.",
+        "historical_context": "Superseded when per-PR scope verification was introduced."
+      },
+      "tags": ["scope", "deprecated"]
+    },
+    {
+      "id": "rule-test-file-presence-pass",
+      "title": "Test File Presence as Verification Pass (Superseded)",
+      "status": "superseded",
+      "version": "0.1",
+      "source_file": "AGENTS.md",
+      "section": "Mandatory automated verification",
+      "summary": "Assuming verification passes merely because test files exist in the repository without running them.",
+      "supersedes": [],
+      "superseded_by": "rule-non-zero-test-execution",
+      "deprecated_patterns": [
+        "test file presence alone constitutes verification"
+      ],
+      "provenance": {
+        "origin_document": "AGENTS.md",
+        "rationale": "Superseded because unexecuted tests provided false verification confidence.",
+        "historical_context": "Superseded by mandatory zero-test guard."
+      },
+      "tags": ["testing", "deprecated"]
+    },
+    {
+      "id": "rule-unverified-deploy-success",
+      "title": "Deployment Exit Code Zero Pass (Superseded)",
+      "status": "superseded",
+      "version": "0.1",
+      "source_file": "VERIFIED_CLOSURE_CONTRACT.md",
+      "section": "Purpose",
+      "summary": "Treating deploy step completion as proof of verified deployment.",
+      "supersedes": [],
+      "superseded_by": "rule-verified-closure-deploy",
+      "deprecated_patterns": [
+        "deployment command exit 0 implies verified deployment"
+      ],
+      "provenance": {
+        "origin_document": "VERIFIED_CLOSURE_CONTRACT.md",
+        "rationale": "Superseded because deployment scripts could succeed without publishing the correct commit SHA.",
+        "historical_context": "Superseded by Verified Closure live version document verification."
+      },
+      "tags": ["deploy", "deprecated"]
+    },
+    {
+      "id": "rule-informal-pr-completion",
+      "title": "Informal PR Completion Without Terminal Handoff (Superseded)",
+      "status": "superseded",
+      "version": "0.1",
+      "source_file": "AGENTS.md",
+      "section": "Mandatory terminal state",
+      "summary": "Concluding tasks with informal verbal summaries without schema-driven handoff reports.",
+      "supersedes": [],
+      "superseded_by": "rule-terminal-state-handoff",
+      "deprecated_patterns": [
+        "complete dispatch without terminal report"
+      ],
+      "provenance": {
+        "origin_document": "AGENTS.md",
+        "rationale": "Superseded to guarantee structured evidence and clear exact next actions.",
+        "historical_context": "Superseded by schema-driven handoff generator."
+      },
+      "tags": ["governance", "deprecated"]
+    },
+    {
+      "id": "rule-portfolio-ui-audit-20260806",
+      "title": "Portfolio UI Audit Snapshot (2026-08-06)",
+      "status": "historical_evidence",
+      "version": "1.0",
+      "source_file": "PORTFOLIO_UI_AUDIT_2026-08-06.md",
+      "section": "Verdict",
+      "summary": "Historical record of the UI audit executed on 2026-08-06 documenting branch states and verification debt.",
+      "supersedes": [],
+      "superseded_by": null,
+      "deprecated_patterns": [],
+      "provenance": {
+        "origin_document": "PORTFOLIO_UI_AUDIT_2026-08-06.md",
+        "rationale": "Preserves historical audit log without treating audit-time draft PR states as active policy.",
+        "historical_context": "Created during portfolio-wide UI audit pass."
+      },
+      "tags": ["audit", "historical"]
+    }
+  ]
+}

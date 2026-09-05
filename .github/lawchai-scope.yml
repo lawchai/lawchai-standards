@@ -1,0 +1,7 @@
+allowed_paths:
+  - .github/lawchai-scope.yml
+  - .github/workflows/standards-ci.yml
+  - schemas/canonical-rules.schema.json
+  - scripts/canonical-rules.json
+  - scripts/resolve-rules.mjs
+  - tests/current-rule-resolver.test.mjs
