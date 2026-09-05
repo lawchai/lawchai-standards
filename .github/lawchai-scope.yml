@@ -1,0 +1,7 @@
+allowed_paths:
+  - .github/lawchai-scope.yml
+  - .github/actions/verification-factory/verification-factory.mjs
+  - scripts/nonzero-evidence-guard.mjs
+  - tests/nonzero-evidence-guard.test.mjs
+  - README.md
+  - PRODUCT_STARTER_BASELINE_V1.md

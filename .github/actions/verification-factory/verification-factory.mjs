@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
+import { evaluateNonZeroEvidence } from '../../../scripts/nonzero-evidence-guard.mjs';
 
 function findTestFilesOnDisk(dir) {
   const testFiles = [];
@@ -40,10 +41,6 @@ function readEvidence(options) {
   }
 }
 
-function normalizedStatus(value) {
-  return typeof value === 'string' ? value.trim().toUpperCase() : '';
-}
-
 function evaluateExecutionEvidence({
   name,
   evidence,
@@ -54,43 +51,20 @@ function evaluateExecutionEvidence({
   blockers,
   requireNonzero = false,
 }) {
-  if (!required) {
-    checks.push({ name, status: 'not_applicable', details: 'Check is not configured for this repository invocation.' });
-    return false;
-  }
-  if (!evidence || typeof evidence !== 'object') {
-    checks.push({ name, status: 'not_run', details: 'No execution evidence supplied; no PASS claimed.' });
-    blockers.push(`${name} execution evidence missing`);
-    return false;
-  }
-  if (!headSha || evidence.head_sha !== headSha) {
-    checks.push({ name, status: 'fail', details: 'Evidence head SHA does not match the receipt head SHA.' });
-    blockers.push(`${name} evidence revision mismatch`);
-    return false;
-  }
-  if (!environment || evidence.environment !== environment) {
-    checks.push({ name, status: 'fail', details: 'Evidence environment does not match the receipt environment.' });
-    blockers.push(`${name} evidence environment mismatch`);
-    return false;
-  }
-  if (normalizedStatus(evidence.status) !== 'PASS') {
-    const status = normalizedStatus(evidence.status) || 'UNKNOWN';
-    checks.push({ name, status: status.toLowerCase(), details: `Execution evidence status is ${status}; no PASS claimed.` });
-    blockers.push(`${name} did not pass`);
-    return false;
-  }
-  if (requireNonzero) {
-    const count = evidence.test_count;
-    if (evidence.executed_nonzero !== true || !Number.isInteger(count) || count <= 0) {
-      checks.push({ name, status: 'fail', details: 'PASS evidence lacks a positive mechanically reported test count.' });
-      blockers.push(`${name} lacks non-zero execution evidence`);
-      return false;
-    }
-    checks.push({ name, status: 'pass', details: `Executed ${count} test(s) successfully at the exact head/environment.` });
-    return true;
-  }
-  checks.push({ name, status: 'pass', details: 'Explicit PASS execution evidence matches the exact head/environment.' });
-  return true;
+  const res = evaluateNonZeroEvidence({
+    evidence,
+    name,
+    required,
+    headSha,
+    environment,
+    checks,
+    blockers,
+    requireNonzero,
+  });
+
+  if (!required) return false;
+  if (requireNonzero) return res.executed_nonzero;
+  return res.valid;
 }
 
 export function runVerificationFactory(options = {}) {
@@ -209,6 +183,7 @@ export function runVerificationFactory(options = {}) {
     environment,
     checks,
     blockers,
+    requireNonzero: false,
   });
   evaluateExecutionEvidence({
     name: 'lint',
@@ -218,6 +193,7 @@ export function runVerificationFactory(options = {}) {
     environment,
     checks,
     blockers,
+    requireNonzero: false,
   });
   evaluateExecutionEvidence({
     name: 'build',
@@ -227,6 +203,7 @@ export function runVerificationFactory(options = {}) {
     environment,
     checks,
     blockers,
+    requireNonzero: false,
   });
 
   if (browserRequired || evidence.browser) {
@@ -238,6 +215,7 @@ export function runVerificationFactory(options = {}) {
       environment,
       checks,
       blockers,
+      requireNonzero: false,
     });
   } else {
     checks.push({
