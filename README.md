@@ -53,13 +53,14 @@ node scripts/init-starter.mjs \
 
 ### 2. Verification Factory
 
-Reusable CI actions and verification scripts (`.github/actions/verification-factory`) enforcing deterministic checks expected by LawChai:
+Reusable CI actions and verification scripts (`.github/actions/verification-factory`, `scripts/nonzero-evidence-guard.mjs`) enforcing deterministic checks expected by LawChai:
 
+- Non-zero verification evidence guard (`scripts/nonzero-evidence-guard.mjs`) mechanically tying test PASS/executed_nonzero to actual non-zero runner evidence;
 - Per-PR structured scope check (`.github/lawchai-scope.yml`);
 - Zero-test execution guard;
 - TypeScript typecheck, lint, and production build;
 - Mobile viewports (320px, 390px) and accessibility baseline checks;
-- Exact-head schema v1 verification receipt generation.
+- Exact-head schema v2 verification receipt generation.
 
 Call the action in workflows:
 

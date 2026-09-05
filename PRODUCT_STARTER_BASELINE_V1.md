@@ -124,7 +124,7 @@ For third-party code, separately apply the licence/provenance/security gate. Thi
 
 ## 10. Verification factory interface
 
-The implemented verifier (`.github/actions/verification-factory`) accepts:
+The non-zero evidence guard primitive (`scripts/nonzero-evidence-guard.mjs`) and verifier (`.github/actions/verification-factory`) accept:
 
 ```yaml
 repository: owner/name
