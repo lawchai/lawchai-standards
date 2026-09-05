@@ -29,4 +29,4 @@ jobs:
         with:
           node-version: 22
       - name: Run deterministic scope and closure fixtures
-        run: node --test tests/scope-check.test.mjs tests/verify-deploy.test.mjs tests/workflow-reference.test.mjs tests/starter.test.mjs tests/verification-factory.test.mjs tests/handoff-generator.test.mjs tests/dry-run-consumer.test.mjs
+        run: node --test tests/scope-check.test.mjs tests/verify-deploy.test.mjs tests/workflow-reference.test.mjs tests/starter.test.mjs tests/verification-factory.test.mjs tests/handoff-generator.test.mjs tests/dry-run-consumer.test.mjs tests/current-rule-resolver.test.mjs

@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LawChaiCanonicalRulesIndex",
+  "type": "object",
+  "required": ["schema_version", "updated_at", "rules"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status", "version", "source_file", "summary", "provenance", "tags"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["canonical", "superseded", "historical_evidence"]
+          },
+          "version": {
+            "type": "string"
+          },
+          "source_file": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "superseded_by": {
+            "type": ["string", "null"]
+          },
+          "deprecated_patterns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "required": ["origin_document", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "origin_document": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "historical_context": {
+                "type": "string"
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
