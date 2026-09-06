@@ -45,7 +45,7 @@ Klanko remains `lawchai/klanko`.
 
 Do not split these out before at least two independent consumers exist. Until then keep their implementation in a canonical product repo and extract by immutable revision.
 
-## venture-opportunities lab repositories
+## venture-opportunities lab repositories — wave 1
 
 - `lawchai-labs/venture-source-adapters`
 - `lawchai-labs/venture-grants-ingestion`
@@ -63,7 +63,7 @@ Do not split these out before at least two independent consumers exist. Until th
 - `lawchai-labs/venture-onboarding-experiments`
 - `lawchai-labs/venture-homepage-experiments`
 
-## event-network lab repositories
+## event-network lab repositories — wave 1
 
 - `lawchai-labs/event-source-adapters`
 - `lawchai-labs/event-calendar-ingestion`
@@ -81,7 +81,7 @@ Do not split these out before at least two independent consumers exist. Until th
 - `lawchai-labs/event-homepage-experiments`
 - `lawchai-labs/event-map-experiments`
 
-## startup-careers lab repositories
+## startup-careers lab repositories — wave 1
 
 - `lawchai-labs/careers-source-adapters`
 - `lawchai-labs/careers-job-normalizer`
@@ -99,7 +99,63 @@ Do not split these out before at least two independent consumers exist. Until th
 - `lawchai-labs/careers-source-admin`
 - `lawchai-labs/careers-homepage-experiments`
 
-## writer topology inside each canonical brand repository
+## High-ROI second-wave writer lanes
+
+These add concurrency where ownership is genuinely separable. They remain experimental and may be archived once their result is integrated.
+
+### venture-opportunities — wave 2
+
+- `lawchai-labs/venture-investor-program-ingestion`
+- `lawchai-labs/venture-startup-credit-ingestion`
+- `lawchai-labs/venture-fellowship-incubator-ingestion`
+- `lawchai-labs/venture-stage-sector-taxonomy`
+- `lawchai-labs/venture-geography-jurisdiction`
+- `lawchai-labs/venture-requirement-extractor`
+- `lawchai-labs/venture-fit-explanation`
+- `lawchai-labs/venture-deadline-calendar`
+- `lawchai-labs/venture-change-detection`
+- `lawchai-labs/venture-data-quality-audits`
+
+### event-network — wave 2
+
+- `lawchai-labs/event-series-recurrence`
+- `lawchai-labs/event-speaker-session-ingestion`
+- `lawchai-labs/event-ticket-pricing`
+- `lawchai-labs/event-venue-travel`
+- `lawchai-labs/event-calendar-sync`
+- `lawchai-labs/event-agenda-planner`
+- `lawchai-labs/event-change-detection`
+- `lawchai-labs/event-data-quality-audits`
+- `lawchai-labs/event-structured-data-seo`
+- `lawchai-labs/event-notification-digest`
+
+### startup-careers — wave 2
+
+- `lawchai-labs/careers-job-freshness`
+- `lawchai-labs/careers-job-expiry`
+- `lawchai-labs/careers-skills-taxonomy`
+- `lawchai-labs/careers-company-funding-enrichment`
+- `lawchai-labs/careers-visa-work-auth`
+- `lawchai-labs/careers-salary-benchmark`
+- `lawchai-labs/careers-equity-estimator`
+- `lawchai-labs/careers-change-detection`
+- `lawchai-labs/careers-data-quality-audits`
+- `lawchai-labs/careers-notification-digest`
+
+## Cross-brand experimental mechanism labs
+
+These are non-authoritative experiments. Promote a mechanism to `lawchai/*` only after at least two real consumers prove a stable contract.
+
+- `lawchai-labs/catalog-query-language-experiments`
+- `lawchai-labs/catalog-ranking-eval-harness`
+- `lawchai-labs/catalog-source-policy-checker`
+- `lawchai-labs/catalog-freshness-monitor`
+- `lawchai-labs/catalog-schema-migration-lab`
+- `lawchai-labs/catalog-observability-lab`
+- `lawchai-labs/catalog-import-export-lab`
+- `lawchai-labs/catalog-accessibility-performance-lab`
+
+## Writer topology inside each canonical brand repository
 
 Do not rely on mini repos for all concurrency. Decompose each canonical brand repo so writers can own non-overlapping directories:
 
@@ -140,14 +196,23 @@ Brand-specific directories then fan out further, e.g. venture `eligibility/`, `d
 - source adapters must preserve attribution, authorization and freshness boundaries;
 - ranking semantics stay brand-specific;
 - auth, secrets, billing, migrations and production deployment remain singular authorities;
-- final composition is serialized.
+- final composition is serialized;
+- source-specific adapter repos are allowed only when the access/attribution contract for that source is explicit; repository separation must not be used to normalize unauthorized scraping.
+
+## Creation policy
+
+Create the three canonical brand repositories first. Lab repositories are a concurrency pool and may be created in waves. Shared authoritative repositories are extracted only after the two-consumer rule is met.
+
+For Windows environments where PowerShell 7 is not installed, invoke creation scripts with Windows PowerShell (`powershell.exe`) or execute the `.ps1` directly from the current Windows PowerShell session. `pwsh.exe` is the PowerShell 6+ binary and must not be assumed present.
 
 ## Capacity
 
-This topology exposes:
+The expanded topology exposes:
 - 3 canonical brand integration repos;
-- 5 potential shared authoritative packages;
-- 45 bounded lab repos;
-- many more writer lanes inside each canonical repo.
+- up to 5 shared authoritative packages once extraction criteria are met;
+- 45 wave-1 brand labs;
+- 30 wave-2 brand labs;
+- 8 cross-brand mechanism labs;
+- many additional non-overlapping writer lanes inside each canonical repo.
 
-The lab count is an upper-bound concurrency pool, not a requirement to keep every repository permanently active.
+That is up to 83 lab repositories plus canonical in-repo scopes. This is a capacity ceiling, not a target for permanently active repositories. Prefer activating only enough labs to keep useful independent work occupied without creating integration debt.
