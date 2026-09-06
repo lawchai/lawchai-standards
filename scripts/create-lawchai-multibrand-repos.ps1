@@ -27,8 +27,23 @@ function Invoke-Gh {
 
 function Test-RepoExists {
     param([Parameter(Mandatory=$true)][string]$FullName)
-    & gh repo view $FullName --json nameWithOwner --jq '.nameWithOwner' 1>$null 2>$null
-    return ($LASTEXITCODE -eq 0)
+
+    # Missing repositories are an expected probe result. In Windows PowerShell
+    # 5.1, native stderr can become a PowerShell ErrorRecord; with the script's
+    # global ErrorActionPreference=Stop that can terminate before LASTEXITCODE
+    # is inspected. Temporarily silence expected native stderr only for this
+    # existence probe, then restore the caller's preference.
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'SilentlyContinue'
+        & gh repo view $FullName --json nameWithOwner --jq '.nameWithOwner' 1>$null 2>$null
+        $exists = ($LASTEXITCODE -eq 0)
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    return $exists
 }
 
 function Add-RepoTarget {
