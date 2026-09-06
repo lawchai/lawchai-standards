@@ -33,7 +33,9 @@ function Test-RepoExists {
 
 function Add-RepoTarget {
     param(
-        [Parameter(Mandatory=$true)][System.Collections.ArrayList]$List,
+        [Parameter(Mandatory=$true)]
+        [AllowEmptyCollection()]
+        [System.Collections.ArrayList]$List,
         [Parameter(Mandatory=$true)][string]$Owner,
         [Parameter(Mandatory=$true)][string]$Name,
         [Parameter(Mandatory=$true)][string]$Description,
