@@ -43,6 +43,42 @@ export function isExplicitlyTruthful(record: EvidenceRecord): boolean {
   return record.status === 'KNOWN' || record.status === 'OBSERVED';
 }
 
+export function filterEvidenceBySource(
+  records: EvidenceRecord[],
+  source: string
+): EvidenceRecord[] {
+  return records.filter((r) => r.source === source);
+}
+
+const VALID_STATUSES: Set<string> = new Set([
+  'KNOWN',
+  'UNKNOWN',
+  'SYNTHETIC',
+  'OBSERVED',
+  'DERIVED',
+  'HYPOTHESIS',
+]);
+
+export function validateEvidenceRecord(record: unknown): record is EvidenceRecord {
+  if (typeof record !== 'object' || record === null) return false;
+  const r = record as Partial<EvidenceRecord>;
+  return (
+    typeof r.id === 'string' &&
+    r.id.trim().length > 0 &&
+    typeof r.status === 'string' &&
+    VALID_STATUSES.has(r.status) &&
+    typeof r.label === 'string' &&
+    typeof r.source === 'string' &&
+    typeof r.recordedAt === 'string'
+  );
+}
+
+export function getTruthfulEvidenceRatio(records: EvidenceRecord[]): number {
+  if (records.length === 0) return 0;
+  const truthfulCount = records.filter(isExplicitlyTruthful).length;
+  return truthfulCount / records.length;
+}
+
 export function summarizeEvidence(records: EvidenceRecord[]): Record<EvidenceStatus, number> {
   const summary: Record<EvidenceStatus, number> = {
     KNOWN: 0,
