@@ -31,7 +31,7 @@ jobs:
           curl -L --max-time 30 -o rr-output/sitemap.xml 'https://sgbudget-tech.e27.co/sitemap.xml' 2>rr-output/sitemap.stderr
           getent ahosts sgbudget-tech.e27.co > rr-output/dns.txt 2>&1 || true
           python3 - <<'PY'
-          import re, json, pathlib
+          import re, pathlib
           p=pathlib.Path('rr-output/app.js')
           s=p.read_text(errors='ignore') if p.exists() else ''
           vals=[]
@@ -51,7 +51,7 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install playwright@1.55.0 >/dev/null 2>&1
           npx playwright install chromium >/dev/null
-          cat >/tmp/render.mjs <<'EOF'
+          cat >render.mjs <<'EOF'
           import { chromium } from 'playwright';
           import fs from 'node:fs';
           const browser = await chromium.launch({headless:true});
@@ -78,12 +78,12 @@ jobs:
           await page.screenshot({path:'rr-output/fullpage.png',fullPage:true});
           await browser.close();
           EOF
-          node /tmp/render.mjs
+          node render.mjs
       - name: Build teardown digest
         shell: bash
         run: |
           python3 - <<'PY'
-          import json, pathlib, re
+          import json, pathlib
           out=pathlib.Path('rr-output')
           lines=['# e27 site extraction digest','']
           hdr=(out/'direct.headers').read_text(errors='ignore') if (out/'direct.headers').exists() else ''
