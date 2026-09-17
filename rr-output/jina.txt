@@ -1,0 +1,110 @@
+Title: Singapore Budget 2026: Tech & Startup Edition
+
+URL Source: https://sgbudget-tech.e27.co/
+
+Markdown Content:
+Companies receive a 40% rebate on corporate income tax for Year of Assessment 2026, with minimum S$1,500 payout for those who hired at least one local employee.
+
+💡 IMPACT FOR YOU
+
+For AI/SaaS Startups Immediate 40% cash back on your 2026 corporate taxes. If you hired local talent, minimum S$1,500 payout. Use this to extend runway, invest in cloud infrastructure, or accelerate product development. For a S$100k tax bill, you save S$40k - that's 4-6 months of AWS/GCP costs or 2 junior developer salaries.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+### Meet the Founders Winning with Budget 2026
+
+Join Echelon 2026 to network and push out AI initiatives. Meet government agencies, policymakers, AI SaaS providers, AI trainers, and other startups and SMEs leveraging Budget 2026 measures.
+
+[Get Tickets](https://echelon.e27.co/#Ticketing)
+
+SkillsFuture website redesigned with clearer AI learning pathways and easier access to relevant courses.
+
+💡 IMPACT FOR YOU
+
+For Career Switchers & Upskilling Redesigned SkillsFuture makes it easier to find AI/ML courses relevant to your role (engineer → ML engineer, PM → AI PM, founder → AI strategy). Free access to premium tools means you can practice building AI features, not just watch tutorials. Lowers barrier to adding AI skills to your startup toolkit.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Massive investment in frontier technologies under Research, Innovation and Enterprise 2030 plan, representing about 1% of GDP annually.
+
+💡 IMPACT FOR YOU
+
+For AI Infrastructure & Deep Tech S$37B (1% of GDP annually) flowing into frontier tech R&D. If you're building AI models, developer tools, or infrastructure, expect grants for compute resources, research partnerships with A*STAR/NUS/NTU, and access to national AI testbeds. SaaS companies can tap into applied research for product innovation.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Singaporeans enrolled in selected AI training courses receive six months of free access to premium AI tools.
+
+💡 IMPACT FOR YOU
+
+For Tech Teams & Founders Upskill your engineers/PMs in AI with 6 months free premium tools (ChatGPT Plus, Claude Pro, GitHub Copilot, Cursor, etc.). Typical cost: S$20-40/user/month = S$120-240 saved per person. For a 10-person team, that's S$2,400 in free tools while they learn. Accelerates AI adoption without training budget.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+### Exhibit Your AI Startup at Echelon 2026
+
+Showcase your AI/SaaS solution to 5,000+ attendees including investors, enterprise buyers, and government agencies. With new AI tax deductions and S$37B RIE2030 funding, this is the perfect time to demonstrate how your innovation leverages Singapore's Budget 2026 initiatives.
+
+National AI missions targeting Advanced Manufacturing, Connectivity, Finance, and Healthcare sectors.
+
+💡 IMPACT FOR YOU
+
+For Vertical SaaS & AI Solutions Four sector missions (Manufacturing, Connectivity, Finance, Healthcare) mean targeted funding and enterprise customer introductions. Building AI for factories? Government will fund pilots with manufacturers. Fintech AI? Direct access to MAS sandbox and bank partnerships. Healthtech? Trials with public hospitals.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Enhanced funding scheme to help startup and growth-stage companies with initial capital and private funding attraction.
+
+💡 IMPACT FOR YOU
+
+For Seed to Series A Startups Government co-invests S$1B alongside VCs through Startup SG Equity. This de-risks your round - when EDBI or SGInnovate backs you, other investors follow. Typical co-investment: government matches 70% of private funding up to S$2M. Makes Singapore fundraising more competitive vs. raising in US/EU.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Development of AI Park at Lorong AI in the one-north district to catalyze ideas, forge collaborations, and create a vibrant AI ecosystem.
+
+💡 IMPACT FOR YOU
+
+For AI Founders & Teams Physical cluster in one-north (near NUS/INSEAD) for AI companies. Co-locate with AI researchers, corporate innovation labs, and other startups. Access shared GPU clusters, demo spaces, and talent pipeline from universities. Reduces isolation, increases serendipitous partnerships and customer discovery.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Companies using AI to transform their businesses can claim 400% tax deductions on R&D, innovation, and capability development expenditures.
+
+💡 IMPACT FOR YOU
+
+For SaaS Companies Adopting AI 400% tax deduction on AI R&D and transformation spend (YA 2027-2028). Spend S$100k on AI engineers, GPU compute, or model training? Deduct S$400k from taxable income. At 17% corporate tax, that's S$68k tax savings on S$100k spend - effectively 68% subsidy. Makes AI integration a no-brainer financially.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Increased funding to help startups scale operations and anchor public listings in Singapore.
+
+💡 IMPACT FOR YOU
+
+For Series B+ & Pre-IPO Companies S$1.5B dedicated to help you scale regionally and go public in Singapore. Access growth capital, IPO advisory, and incentives to list on SGX. If you're choosing between Singapore, NASDAQ, or staying private - this tilts economics toward anchoring here and accessing SEA markets.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+New National AI Council chaired by PM Lawrence Wong to provide strategic direction and coordinate national AI efforts.
+
+💡 IMPACT FOR YOU
+
+For AI Product Companies PM Wong chairs the council - your regulatory concerns go to the top. Expect clearer AI governance frameworks, faster approval for AI pilots in regulated sectors (finance, healthcare), and influence over national AI procurement standards. If you sell AI/SaaS to government or enterprises, this shapes your market access.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Minimum qualifying salary for Employment Pass increases from S$5,600 to S$6,000 starting January 2027.
+
+💡 IMPACT FOR YOU
+
+For Hiring Senior Talent EP minimum salary jumps to S$6,000 (from S$5,600) in Jan 2027. If you're hiring senior engineers, AI researchers, or GTM leads from overseas, adjust compensation bands. For a 10-person team with 3 EPs, budget an extra S$1,200/month (S$14.4k/year) in salary costs. Factor this into your 2027 hiring plan.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
+
+Minimum qualifying salary for S Pass increases from S$3,300 to S$3,600, with financial services sector at S$4,000.
+
+💡 IMPACT FOR YOU
+
+For Hiring Mid-Level Engineers S Pass minimum rises to S$3,600 (S$4,000 for fintech/AI companies). Affects hiring mid-level developers, DevOps, or customer success from Malaysia, India, Philippines. For fintech/AI SaaS, budget S$4k minimum. A 5-person mid-level team costs an extra S$1,500-3,000/month vs. 2026. Plan salary adjustments for Q1 2027.
+
+Join the discussion — Share your thoughts on how this impacts your startup on [e27.co](https://e27.co/)
