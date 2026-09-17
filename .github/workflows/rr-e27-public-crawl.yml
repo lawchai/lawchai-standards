@@ -1,0 +1,44 @@
+name: RR e27 retrieval probe
+on:
+  push:
+    branches: [rr/e27-public-crawl-20260917]
+    paths-ignore: ['rr-output/**']
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve public traces
+        shell: bash
+        run: |
+          set +e
+          mkdir -p rr-output
+          target='https://sgbudget-tech.e27.co/'
+          curl -L --compressed --max-time 30 -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' -D rr-output/direct.headers -o rr-output/direct.html "$target" 2>rr-output/direct.stderr
+          printf '%s' "$?" > rr-output/direct.exit
+          curl -L --max-time 45 -D rr-output/jina.headers -o rr-output/jina.txt 'https://r.jina.ai/https://sgbudget-tech.e27.co/' 2>rr-output/jina.stderr
+          printf '%s' "$?" > rr-output/jina.exit
+          curl -L --max-time 30 -o rr-output/robots.txt 'https://sgbudget-tech.e27.co/robots.txt' 2>rr-output/robots.stderr
+          curl -L --max-time 30 -o rr-output/sitemap.xml 'https://sgbudget-tech.e27.co/sitemap.xml' 2>rr-output/sitemap.stderr
+          curl -L --max-time 45 -G 'https://index.commoncrawl.org/CC-MAIN-2026-34-index' --data-urlencode 'url=sgbudget-tech.e27.co/*' --data-urlencode 'output=json' -o rr-output/commoncrawl.json 2>rr-output/commoncrawl.stderr
+          curl -L --max-time 45 -G 'https://web.archive.org/cdx/search/cdx' --data-urlencode 'url=sgbudget-tech.e27.co/*' --data-urlencode 'output=json' --data-urlencode 'filter=statuscode:200' -o rr-output/wayback.json 2>rr-output/wayback.stderr
+          getent ahosts sgbudget-tech.e27.co > rr-output/dns.txt 2>&1 || true
+          {
+            echo '# e27 retrieval probe'
+            echo '## direct headers'; sed -n '1,60p' rr-output/direct.headers
+            echo; echo '## direct first text'; sed -n '1,100p' rr-output/direct.html
+            echo; echo '## jina'; sed -n '1,250p' rr-output/jina.txt
+            echo; echo '## commoncrawl'; sed -n '1,100p' rr-output/commoncrawl.json
+            echo; echo '## wayback'; sed -n '1,100p' rr-output/wayback.json
+            echo; echo '## DNS'; cat rr-output/dns.txt
+          } > rr-output/SUMMARY.md
+      - name: Commit output
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add rr-output
+          git commit -m 'chore: e27 retrieval output [skip ci]' || exit 0
+          git push origin HEAD:rr/e27-public-crawl-20260917
