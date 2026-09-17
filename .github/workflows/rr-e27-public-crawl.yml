@@ -8,37 +8,101 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
-      - name: Retrieve public traces
+      - name: Retrieve source and assets
         shell: bash
         run: |
           set +e
           mkdir -p rr-output
           target='https://sgbudget-tech.e27.co/'
-          curl -L --compressed --max-time 30 -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' -D rr-output/direct.headers -o rr-output/direct.html "$target" 2>rr-output/direct.stderr
-          printf '%s' "$?" > rr-output/direct.exit
+          ua='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36'
+          curl -L --compressed --max-time 30 -A "$ua" -D rr-output/direct.headers -o rr-output/direct.html "$target" 2>rr-output/direct.stderr
           curl -L --max-time 45 -D rr-output/jina.headers -o rr-output/jina.txt 'https://r.jina.ai/https://sgbudget-tech.e27.co/' 2>rr-output/jina.stderr
-          printf '%s' "$?" > rr-output/jina.exit
+          js=$(grep -oE 'src="/[^"]+\.js"' rr-output/direct.html | head -1 | cut -d'"' -f2)
+          css=$(grep -oE 'href="/[^"]+\.css"' rr-output/direct.html | head -1 | cut -d'"' -f2)
+          echo "$js" > rr-output/js-path.txt
+          echo "$css" > rr-output/css-path.txt
+          [ -n "$js" ] && curl -L --compressed --max-time 45 -A "$ua" -o rr-output/app.js "https://sgbudget-tech.e27.co$js"
+          [ -n "$css" ] && curl -L --compressed --max-time 45 -A "$ua" -o rr-output/app.css "https://sgbudget-tech.e27.co$css"
+          curl -L --max-time 30 -o rr-output/manifest.webmanifest 'https://sgbudget-tech.e27.co/__manus/pwa/manifest.webmanifest' 2>rr-output/manifest.stderr
           curl -L --max-time 30 -o rr-output/robots.txt 'https://sgbudget-tech.e27.co/robots.txt' 2>rr-output/robots.stderr
           curl -L --max-time 30 -o rr-output/sitemap.xml 'https://sgbudget-tech.e27.co/sitemap.xml' 2>rr-output/sitemap.stderr
-          curl -L --max-time 45 -G 'https://index.commoncrawl.org/CC-MAIN-2026-34-index' --data-urlencode 'url=sgbudget-tech.e27.co/*' --data-urlencode 'output=json' -o rr-output/commoncrawl.json 2>rr-output/commoncrawl.stderr
-          curl -L --max-time 45 -G 'https://web.archive.org/cdx/search/cdx' --data-urlencode 'url=sgbudget-tech.e27.co/*' --data-urlencode 'output=json' --data-urlencode 'filter=statuscode:200' -o rr-output/wayback.json 2>rr-output/wayback.stderr
           getent ahosts sgbudget-tech.e27.co > rr-output/dns.txt 2>&1 || true
-          {
-            echo '# e27 retrieval probe'
-            echo '## direct headers'; sed -n '1,60p' rr-output/direct.headers
-            echo; echo '## direct first text'; sed -n '1,100p' rr-output/direct.html
-            echo; echo '## jina'; sed -n '1,250p' rr-output/jina.txt
-            echo; echo '## commoncrawl'; sed -n '1,100p' rr-output/commoncrawl.json
-            echo; echo '## wayback'; sed -n '1,100p' rr-output/wayback.json
-            echo; echo '## DNS'; cat rr-output/dns.txt
-          } > rr-output/SUMMARY.md
+          python3 - <<'PY'
+          import re, json, pathlib
+          p=pathlib.Path('rr-output/app.js')
+          s=p.read_text(errors='ignore') if p.exists() else ''
+          vals=[]
+          for m in re.finditer(r'(["\'`])((?:\\.|(?!\1).){4,500}?)\1', s):
+              t=m.group(2)
+              if re.search(r'[A-Za-z]{3}',t) and not re.fullmatch(r'[A-Za-z0-9_./:@#?&=%+\-]{4,}',t):
+                  vals.append(t.replace('\\n',' ').replace('\\"','"').replace("\\'", "'"))
+          seen=[]
+          for x in vals:
+              if x not in seen: seen.append(x)
+          pathlib.Path('rr-output/js-strings.txt').write_text('\n'.join(seen))
+          PY
+      - name: Render with Chromium
+        shell: bash
+        continue-on-error: true
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install chromium >/dev/null
+          cat >/tmp/render.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          const browser = await chromium.launch({headless:true});
+          const context = await browser.newContext({locale:'en-SG', timezoneId:'Asia/Singapore', viewport:{width:1440,height:1100}});
+          const page = await context.newPage();
+          const log=[];
+          page.on('console',m=>log.push({type:'console',level:m.type(),text:m.text()}));
+          page.on('requestfailed',r=>log.push({type:'requestfailed',url:r.url(),error:r.failure()?.errorText}));
+          const resp=await page.goto('https://sgbudget-tech.e27.co/',{waitUntil:'networkidle',timeout:60000});
+          await page.waitForTimeout(2500);
+          const data=await page.evaluate(()=>({
+            title:document.title,
+            url:location.href,
+            headings:[...document.querySelectorAll('h1,h2,h3,h4')].map(x=>({tag:x.tagName,text:(x.innerText||'').trim()})).filter(x=>x.text),
+            sections:[...document.querySelectorAll('section')].map((x,i)=>({i,text:(x.innerText||'').trim().slice(0,4000)})),
+            links:[...document.querySelectorAll('a[href]')].map(a=>({text:(a.innerText||'').trim(),href:a.href})),
+            buttons:[...document.querySelectorAll('button,[role=button]')].map(b=>(b.innerText||'').trim()).filter(Boolean),
+            bodyText:document.body.innerText,
+            bodyHTML:document.body.innerHTML.slice(0,500000)
+          }));
+          fs.writeFileSync('rr-output/render.json',JSON.stringify({status:resp?.status(),...data},null,2));
+          fs.writeFileSync('rr-output/render.txt',data.bodyText);
+          fs.writeFileSync('rr-output/render-log.json',JSON.stringify(log,null,2));
+          await page.screenshot({path:'rr-output/fullpage.png',fullPage:true});
+          await browser.close();
+          EOF
+          node /tmp/render.mjs
+      - name: Build teardown digest
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re
+          out=pathlib.Path('rr-output')
+          lines=['# e27 site extraction digest','']
+          hdr=(out/'direct.headers').read_text(errors='ignore') if (out/'direct.headers').exists() else ''
+          lines += ['## HTTP', *hdr.splitlines()[:30], '']
+          if (out/'render.json').exists():
+              d=json.loads((out/'render.json').read_text())
+              lines += [f"## Rendered status: {d.get('status')}", f"Title: {d.get('title')}", '', '## Headings']
+              lines += [f"- {h['tag']}: {h['text']}" for h in d.get('headings',[])]
+              lines += ['', '## Buttons'] + [f"- {x}" for x in d.get('buttons',[])]
+              lines += ['', '## Links'] + [f"- {x.get('text','')} -> {x.get('href','')}" for x in d.get('links',[])[:100]]
+              lines += ['', '## Visible body', d.get('bodyText','')]
+          else:
+              lines += ['## Render failed', (out/'render-log.json').read_text(errors='ignore') if (out/'render-log.json').exists() else 'No render output']
+          (out/'TEARDOWN.md').write_text('\n'.join(lines))
+          PY
       - name: Commit output
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add rr-output
-          git commit -m 'chore: e27 retrieval output [skip ci]' || exit 0
+          git commit -m 'chore: deepen e27 extraction [skip ci]' || exit 0
           git push origin HEAD:rr/e27-public-crawl-20260917
