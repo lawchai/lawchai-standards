@@ -61,3 +61,91 @@ export function summarizeEvidence(records: EvidenceRecord[]): Record<EvidenceSta
 
   return summary;
 }
+
+export interface EvidenceDiffItem {
+  record: EvidenceRecord;
+  changeType: 'ADDED' | 'REMOVED' | 'MODIFIED' | 'UNCHANGED';
+  previousStatus?: EvidenceStatus;
+  newStatus?: EvidenceStatus;
+}
+
+export interface EvidenceComparisonResult {
+  added: EvidenceRecord[];
+  removed: EvidenceRecord[];
+  modified: EvidenceDiffItem[];
+  unchanged: EvidenceRecord[];
+  totalPrevious: number;
+  totalCurrent: number;
+}
+
+export function compareEvidenceLists(
+  previous: EvidenceRecord[],
+  current: EvidenceRecord[]
+): EvidenceComparisonResult {
+  const prevMap = new Map<string, EvidenceRecord>();
+  for (const p of previous) {
+    prevMap.set(p.id, p);
+  }
+
+  const currMap = new Map<string, EvidenceRecord>();
+  for (const c of current) {
+    currMap.set(c.id, c);
+  }
+
+  const added: EvidenceRecord[] = [];
+  const removed: EvidenceRecord[] = [];
+  const modified: EvidenceDiffItem[] = [];
+  const unchanged: EvidenceRecord[] = [];
+
+  for (const c of current) {
+    if (!prevMap.has(c.id)) {
+      added.push(c);
+    } else {
+      const p = prevMap.get(c.id)!;
+      if (p.status !== c.status || p.label !== c.label) {
+        modified.push({
+          record: c,
+          changeType: 'MODIFIED',
+          previousStatus: p.status,
+          newStatus: c.status,
+        });
+      } else {
+        unchanged.push(c);
+      }
+    }
+  }
+
+  for (const p of previous) {
+    if (!currMap.has(p.id)) {
+      removed.push(p);
+    }
+  }
+
+  return {
+    added,
+    removed,
+    modified,
+    unchanged,
+    totalPrevious: previous.length,
+    totalCurrent: current.length,
+  };
+}
+
+export function transitionEvidenceStatus(
+  record: EvidenceRecord,
+  newStatus: EvidenceStatus,
+  reason: string,
+  reviewer = 'user-reviewer'
+): EvidenceRecord {
+  return {
+    ...record,
+    status: newStatus,
+    details: {
+      ...(record.details || {}),
+      previousStatus: record.status,
+      transitionReason: reason,
+      transitionedBy: reviewer,
+      transitionedAt: new Date().toISOString(),
+    },
+  };
+}
